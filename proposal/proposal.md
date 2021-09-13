@@ -147,8 +147,6 @@ viewer preferences.
 
 #### Question 1
 
-Question 1:
-
 We would like to explore how content trends change over time. We will
 leverage the following variables to answer this question funny,
 show\_product\_quickly, patriotic, celebrity, danger, animals, use\_sex,
@@ -192,7 +190,7 @@ average, over the history of the dataset. We may also explore how the
 proportion of likes and dislikes changes over time, as some brands may
 have increased / decreased in popularity over time.
 
-We would like to explore this question, because we are interested in
+We would like to explore this question because we are interested in
 discovering which brands are received best by those who watch Super Bowl
 commercials. That way, next time we all watch the Super Bowl, we know
 which ads are likely to be best. This analysis should also provide some
@@ -219,19 +217,22 @@ live television.
 
 ## Analysis plan
 
-To address Question 1, we plan on creating two plots. The first plot
-will be a geom\_line plot with year on the x-axis and like\_count on the
-y-axis. We will color the lines by type of video, after creating a
-variable type that encompasses whether the video is categorized as
-“funny,” “show\_product\_quickly,” “patriotic,” “celebrity,” “danger,”
-“animals,” or “use\_sex.” This plot is best for our question because it
-will clearly show trends over time faceted by category, which is exactly
-what we are trying to analyze. The second plot will be a deep dive into
-one content area. After creating the first plot and conducting a simple
-analysis, we will choose a content area that has an interesting trend
-(e.g., very high likes in some years, very low likes in others). We will
-dive into this category and analyze like\_count, view\_count, and
-dislike\_count over the years with a faceted barplot.
+To address Question 1, we plan on creating two plots:
+
+The first plot will be a geom\_line plot with year on the x-axis and
+like\_count on the y-axis. We will color the lines by type of video,
+after creating a variable type that encompasses whether the video is
+categorized as “funny,” “show\_product\_quickly,” “patriotic,”
+“celebrity,” “danger,” “animals,” or “use\_sex.” This plot is best for
+our question because it will clearly show trends over time faceted by
+category, which is exactly what we are trying to analyze.
+
+The second plot will be a deep dive into one content area. After
+creating the first plot and conducting a simple analysis, we will choose
+a content area that has an interesting trend (e.g., very high likes in
+some years, very low likes in others). We will dive into this category
+and analyze like\_count, view\_count, and dislike\_count over the years
+with a faceted barplot.
 
 To address Question 2, we plan on creating two plots:
 

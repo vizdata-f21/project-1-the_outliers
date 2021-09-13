@@ -24,8 +24,6 @@ We chose to use the Superbowl Ad dataset. The dataset came from FiveThirtyEight,
 
 #### Question 1 
 
-Question 1: 
-
 We would like to explore how content trends change over time. We will leverage the following variables to answer this question funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count year. Specifically we will explore the distribution of certain commercial content categories (funny, show_product_quickly patriotic, celebrity, danger, animlas, use_sex) over time. We are interested in seeing the changes in commercial advertising over time. We predict that patriotic themes in commericals would decrease
 over time. 
 
@@ -46,7 +44,7 @@ years later than they initially ran on live television.
 
 For our second question, we would like to explore which brands are most popular amongst viewers on Youtube. Specifically, for each brand represented in the data, we plan to look at what proportion of the reactions (likes + dislikes) each brand receives on their Super Bowl commercials. We plan to look at the proportion of likes and dislikes, on average, over the history of the dataset. We may also explore how the proportion of likes and dislikes changes over time, as some brands may have increased / decreased in popularity over time. 
 
-We would like to explore this question, because we are interested in discovering which brands are received best by those who watch Super Bowl commercials. That way, next time we all watch the Super Bowl, we know which ads are likely to be best. This analysis should also provide some insight into which brands are more popular generally, which should be interesting to see as well. 
+We would like to explore this question because we are interested in discovering which brands are received best by those who watch Super Bowl commercials. That way, next time we all watch the Super Bowl, we know which ads are likely to be best. This analysis should also provide some insight into which brands are more popular generally, which should be interesting to see as well. 
 
 
 
@@ -64,16 +62,18 @@ years later than they initially ran on live television.
 
 ## Analysis plan
 
-To address Question 1, we plan on creating two plots. 
-    The first plot will be a geom_line plot with year on the x-axis and like_count on the y-axis. We will color the lines by type of video, after creating a variable type that encompasses whether the video is categorized as “funny,” “show_product_quickly,” “patriotic,” “celebrity,” “danger,” “animals,” or “use_sex.” This plot is best for our question because it will clearly show trends over time faceted by category, which is exactly what we are trying to analyze. 
-    The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (e.g., very high likes in some years, very low likes in others). We will dive into this category and analyze like_count, view_count, and dislike_count over the years with a faceted barplot. 
+To address Question 1, we plan on creating two plots: 
+    
+  The first plot will be a geom_line plot with year on the x-axis and like_count on the y-axis. We will color the lines by type of video, after creating a variable type that encompasses whether the video is categorized as “funny,” “show_product_quickly,” “patriotic,” “celebrity,” “danger,” “animals,” or “use_sex.” This plot is best for our question because it will clearly show trends over time faceted by category, which is exactly what we are trying to analyze. 
+  
+  The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (e.g., very high likes in some years, very low likes in others). We will dive into this category and analyze like_count, view_count, and dislike_count over the years with a faceted barplot. 
 
 To address Question 2, we plan on creating two plots:
 
-For the first step of our analysis, we will look at the average proportion of likes and dislikes for each brand across all the time periods. To view this visually, we will create a new variable that first finds the proportion of likes and dislikes out of total reactions (likes and dislikes). We will then take the average of this proportion for each brand across all time periods. The graph we plan to use to represent this will be a 100% stacked bar chart. This should show which brands are most well received on average. 
+  For the first step of our analysis, we will look at the average proportion of likes and dislikes for each brand across all the time periods. To view this visually, we will create a new variable that first finds the proportion of likes and dislikes out of total reactions (likes and dislikes). We will then take the average of this proportion for each brand across all time periods. The graph we plan to use to represent this will be a 100% stacked bar chart. This should show which brands are most well received on average. 
 
-Our second plot will explore like/dislike trends over time. We are going to pick the top three brands based on our previous analysis (highest proportion of likes). We will use geom_line and color the lines by brand. We will create a new variable called proportion_likes, which divides the number of likes (like_count) by total reactions (like_count + dislike_count). The proportion_likes will be on the y-axis, and the year will be on the x-axis. This graph will show us trends in the proportion of likes for the three most popular brands.
+  Our second plot will explore like/dislike trends over time. We are going to pick the top three brands based on our previous analysis (highest proportion of likes). We will use geom_line and color the lines by brand. We will create a new variable called proportion_likes, which divides the number of likes (like_count) by total reactions (like_count + dislike_count). The proportion_likes will be on the y-axis, and the year will be on the x-axis. This graph will show us trends in the proportion of likes for the three most popular brands.
 
-Both of our questions use the variables in the original dataset: Superbowl Ads. Therefore, we do not need to merge any external data.
+  Both of our questions use the variables in the original dataset: Superbowl Ads. Therefore, we do not need to merge any external data.
 
 
