@@ -27,12 +27,15 @@ The two questions you want to answer.
 
 Question 1: 
 
-How do content trends change over time? We will leverage the following variables to answer this question: 
+We would like to explore how content trends change over time. We will leverage the following variables to answer this question funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count year. Specifically we will explore the distribution of certain commercial content categories (funny, show_product_quickly patriotic, celebrity, danger, animlas, use_sex) over time. We are interested in seeing the changes in commercial advertising over time. We predict that patriotic themes in commericals would decrease
+over time. 
+
+
 
 ```{r Q1-variables}
 
 Q1data <- youtube %>% 
-  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, year)
+  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count, year)
 
 glimpse(Q1data)
 
