@@ -6,6 +6,7 @@ output: github_document
 
 ```{r load-packages, message = FALSE}
 library(tidyverse)
+library(dplyr)
 ```
 
 ## Dataset
@@ -21,6 +22,24 @@ We chose to use the Superbowl Ad dataset. The dataset came from FiveThirtyEight,
 ## Questions
 
 The two questions you want to answer.
+
+#### Question 1 
+
+Question 1: 
+
+How do content trends change over time? We will leverage the following variables to answer this question: 
+
+```{r Q1-variables}
+
+Q1data <- youtube %>% 
+  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, year)
+
+glimpse(Q1data)
+
+```
+
+#### Question 
+
 
 ## Analysis plan
 
