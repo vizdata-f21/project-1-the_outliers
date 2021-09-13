@@ -38,9 +38,32 @@ glimpse(Q1data)
 
 ```
 
-#### Question 
+We chose not to use published_date for our time series analyses because some of the videos were uploaded
+years later than they initially ran on live television.
 
+#### Question 2
+
+For our second question, we would like to explore which brands are most popular amongst viewers on Youtube. Specifically, for each brand represented in the data, we plan to look at what proportion of the reactions (likes + dislikes) each brand receives on their Super Bowl commercials. We plan to look at the proportion of likes and dislikes, on average, over the history of the dataset. We may also explore how the proportion of likes and dislikes changes over time, as some brands may have increased / decreased in popularity over time. 
+
+```{r Q2-variables}
+
+Q2data <- youtube %>%
+  select(brand, like_count, dislike_count, year)
+
+glimpse(Q2data)
+
+```
+
+We chose not to use published_date for our time series analyses because some of the videos were uploaded
+years later than they initially ran on live television.
 
 ## Analysis plan
 
+
+
 A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
+
+
+Both of our questions use the variables in the original dataset: Superbowl Ads. Therefore, we do not need to merge any external data.
+
+

@@ -9,6 +9,10 @@ library(tidyverse)
     ## Warning in system("timedatectl", intern = TRUE): running command 'timedatectl'
     ## had status 1
 
+``` r
+library(dplyr)
+```
+
 ## Dataset
 
 ``` r
@@ -143,8 +147,69 @@ viewer preferences.
 
 The two questions you want to answer.
 
+#### Question 1
+
+Question 1:
+
+How do content trends change over time? We will leverage the following
+variables to answer this question:
+
+``` r
+Q1data <- youtube %>% 
+  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, year)
+
+glimpse(Q1data)
+```
+
+    ## Rows: 247
+    ## Columns: 8
+    ## $ funny                <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE…
+    ## $ show_product_quickly <lgl> FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALS…
+    ## $ patriotic            <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, …
+    ## $ celebrity            <lgl> FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE, TRU…
+    ## $ danger               <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALS…
+    ## $ animals              <lgl> FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALS…
+    ## $ use_sex              <lgl> FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, F…
+    ## $ year                 <dbl> 2018, 2020, 2006, 2018, 2003, 2020, 2020, 2020, 2…
+
+We chose not to use published\_date for our time series analyses because
+some of the videos were uploaded years later than they initially ran on
+live television.
+
+#### Question 2
+
+For our second question, we would like to explore which brands are most
+popular amongst viewers on Youtube. Specifically, for each brand
+represented in the data, we plan to look at what proportion of the
+reactions (likes + dislikes) each brand receives on their Super Bowl
+commercials. We plan to look at the proportion of likes and dislikes, on
+average, over the history of the dataset. We may also explore how the
+proportion of likes and dislikes changes over time, as some brands may
+have increased / decreased in popularity over time.
+
+``` r
+Q2data <- youtube %>%
+  select(brand, like_count, dislike_count, year)
+
+glimpse(Q2data)
+```
+
+    ## Rows: 247
+    ## Columns: 4
+    ## $ brand         <chr> "Toyota", "Bud Light", "Bud Light", "Hynudai", "Bud Ligh…
+    ## $ like_count    <dbl> 1233, 485, 129, 2, 20, 115, 1470, 78, 342, 7, 46, 9, 133…
+    ## $ dislike_count <dbl> 38, 14, 15, 0, 3, 11, 384, 6, 7, 0, 14, 0, 24, 10, 7445,…
+    ## $ year          <dbl> 2018, 2020, 2006, 2018, 2003, 2020, 2020, 2020, 2020, 20…
+
+We chose not to use published\_date for our time series analyses because
+some of the videos were uploaded years later than they initially ran on
+live television.
+
 ## Analysis plan
 
 A plan for answering each of the questions including the variables
 involved, variables to be created (if any), external data to be merged
 in (if any).
+
+Both of our questions use the variables in the original dataset:
+Superbowl Ads. Therefore, we do not need to merge any external data.
