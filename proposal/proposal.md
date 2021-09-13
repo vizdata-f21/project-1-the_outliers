@@ -145,8 +145,6 @@ viewer preferences.
 
 ## Questions
 
-The two questions you want to answer.
-
 #### Question 1
 
 Question 1:
@@ -194,6 +192,13 @@ average, over the history of the dataset. We may also explore how the
 proportion of likes and dislikes changes over time, as some brands may
 have increased / decreased in popularity over time.
 
+We would like to explore this question, because we are interested in
+discovering which brands are received best by those who watch Super Bowl
+commercials. That way, next time we all watch the Super Bowl, we know
+which ads are likely to be best. This analysis should also provide some
+insight into which brands are more popular generally, which should be
+interesting to see as well.
+
 ``` r
 Q2data <- youtube %>%
   select(brand, like_count, dislike_count, year)
@@ -228,8 +233,25 @@ analysis, we will choose a content area that has an interesting trend
 dive into this category and analyze like\_count, view\_count, and
 dislike\_count over the years with a faceted barplot.
 
-To address Question 2, we plan on creating two plots: The first plot
-will be The second plot will be
+To address Question 2, we plan on creating two plots:
+
+For the first step of our analysis, we will look at the average
+proportion of likes and dislikes for each brand across all the time
+periods. To view this visually, we will create a new variable that first
+finds the proportion of likes and dislikes out of total reactions (likes
+and dislikes). We will then take the average of this proportion for each
+brand across all time periods. The graph we plan to use to represent
+this will be a 100% stacked bar chart. This should show which brands are
+most well received on average.
+
+Our second plot will explore like/dislike trends over time. We are going
+to pick the top three brands based on our previous analysis (highest
+proportion of likes). We will use geom\_line and color the lines by
+brand. We will create a new variable called proportion\_likes, which
+divides the number of likes (like\_count) by total reactions
+(like\_count + dislike\_count). The proportion\_likes will be on the
+y-axis, and the year will be on the x-axis. This graph will show us
+trends in the proportion of likes for the three most popular brands.
 
 Both of our questions use the variables in the original dataset:
 Superbowl Ads. Therefore, we do not need to merge any external data.
