@@ -62,10 +62,14 @@ years later than they initially ran on live television.
 
 ## Analysis plan
 
+To address Question 1, we plan on creating two plots. 
+    The first plot will be a geom_line plot with year on the x-axis and like_count on the y-axis. We will color the lines by type of video, after creating a variable type that encompasses whether the video is categorized as “funny,” “show_product_quickly,” “patriotic,” “celebrity,” “danger,” “animals,” or “use_sex.” This plot is best for our question because it will clearly show trends over time faceted by category, which is exactly what we are trying to analyze. 
+    The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (e.g., very high likes in some years, very low likes in others). We will dive into this category and analyze like_count, view_count, and dislike_count over the years with a faceted barplot. 
 
 
-A plan for answering each of the questions including the variables involved, variables to be created (if any), external data to be merged in (if any).
-
+To address Question 2, we plan on creating two plots:
+  The first plot will be
+  The second plot will be
 
 Both of our questions use the variables in the original dataset: Superbowl Ads. Therefore, we do not need to merge any external data.
 

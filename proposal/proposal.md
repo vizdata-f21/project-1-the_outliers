@@ -151,18 +151,24 @@ The two questions you want to answer.
 
 Question 1:
 
-How do content trends change over time? We will leverage the following
-variables to answer this question:
+We would like to explore how content trends change over time. We will
+leverage the following variables to answer this question funny,
+show\_product\_quickly, patriotic, celebrity, danger, animals, use\_sex,
+like\_count year. Specifically we will explore the distribution of
+certain commercial content categories (funny, show\_product\_quickly
+patriotic, celebrity, danger, animlas, use\_sex) over time. We are
+interested in seeing the changes in commercial advertising over time. We
+predict that patriotic themes in commericals would decrease over time.
 
 ``` r
 Q1data <- youtube %>% 
-  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, year)
+  select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count, year)
 
 glimpse(Q1data)
 ```
 
     ## Rows: 247
-    ## Columns: 8
+    ## Columns: 9
     ## $ funny                <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE…
     ## $ show_product_quickly <lgl> FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALS…
     ## $ patriotic            <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, …
@@ -170,6 +176,7 @@ glimpse(Q1data)
     ## $ danger               <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALS…
     ## $ animals              <lgl> FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALS…
     ## $ use_sex              <lgl> FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, F…
+    ## $ like_count           <dbl> 1233, 485, 129, 2, 20, 115, 1470, 78, 342, 7, 46,…
     ## $ year                 <dbl> 2018, 2020, 2006, 2018, 2003, 2020, 2020, 2020, 2…
 
 We chose not to use published\_date for our time series analyses because
@@ -207,9 +214,22 @@ live television.
 
 ## Analysis plan
 
-A plan for answering each of the questions including the variables
-involved, variables to be created (if any), external data to be merged
-in (if any).
+To address Question 1, we plan on creating two plots. The first plot
+will be a geom\_line plot with year on the x-axis and like\_count on the
+y-axis. We will color the lines by type of video, after creating a
+variable type that encompasses whether the video is categorized as
+“funny,” “show\_product\_quickly,” “patriotic,” “celebrity,” “danger,”
+“animals,” or “use\_sex.” This plot is best for our question because it
+will clearly show trends over time faceted by category, which is exactly
+what we are trying to analyze. The second plot will be a deep dive into
+one content area. After creating the first plot and conducting a simple
+analysis, we will choose a content area that has an interesting trend
+(e.g., very high likes in some years, very low likes in others). We will
+dive into this category and analyze like\_count, view\_count, and
+dislike\_count over the years with a faceted barplot.
+
+To address Question 2, we plan on creating two plots: The first plot
+will be The second plot will be
 
 Both of our questions use the variables in the original dataset:
 Superbowl Ads. Therefore, we do not need to merge any external data.
