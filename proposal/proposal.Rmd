@@ -10,9 +10,13 @@ library(tidyverse)
 
 ## Dataset
 
-A brief description of your dataset including its provenance, dimensions, etc. as well as the reason why you chose this dataset.
-
-Make sure to load the data and use inline code for some of this information.
+```{r read-data}
+youtube <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+summary(youtube)
+head(youtube)
+names(youtube)
+```
+We chose to use the Superbowl Ad dataset. The dataset came from FiveThirtyEight, but it was originally sourced from superbowl-ads.com.  The dataset has 247 rows and 25 columns. The variable names include year, brand, superbowl_ads_dot_com_url, youtube_url, funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, id, kind, etag, view_count, like_count, dislike_count, favorite_count, comment_count, published_at, title, description, thumbnail, channel_title, and category_id. We chose to use this dataset because we all love Superbowl ads, and we were initially interested in viewing trends over time. This dataset has a variable dedicated to the ad’s published date and several variables surrounding viewer preferences. 
 
 ## Questions
 
