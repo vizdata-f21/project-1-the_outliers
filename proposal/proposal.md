@@ -2,21 +2,17 @@ Project proposal
 ================
 The Outliers
 
+## Load Packages
+
 ``` r
 library(tidyverse)
-```
-
-    ## Warning in system("timedatectl", intern = TRUE): running command 'timedatectl'
-    ## had status 1
-
-``` r
 library(dplyr)
 ```
 
 ## Dataset
 
 ``` r
-youtube <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
 ```
 
     ## Rows: 247 Columns: 25
@@ -94,23 +90,36 @@ summary(youtube)
     ##                                        NA's   :16
 
 ``` r
-head(youtube)
+glimpse(youtube)
 ```
 
-    ## # A tibble: 6 × 25
-    ##    year brand     superbowl_ads_do… youtube_url funny show_product_qu… patriotic
-    ##   <dbl> <chr>     <chr>             <chr>       <lgl> <lgl>            <lgl>    
-    ## 1  2018 Toyota    https://superbow… https://ww… FALSE FALSE            FALSE    
-    ## 2  2020 Bud Light https://superbow… https://ww… TRUE  TRUE             FALSE    
-    ## 3  2006 Bud Light https://superbow… https://ww… TRUE  FALSE            FALSE    
-    ## 4  2018 Hynudai   https://superbow… https://ww… FALSE TRUE             FALSE    
-    ## 5  2003 Bud Light https://superbow… https://ww… TRUE  TRUE             FALSE    
-    ## 6  2020 Toyota    https://superbow… https://ww… TRUE  TRUE             FALSE    
-    ## # … with 18 more variables: celebrity <lgl>, danger <lgl>, animals <lgl>,
-    ## #   use_sex <lgl>, id <chr>, kind <chr>, etag <chr>, view_count <dbl>,
-    ## #   like_count <dbl>, dislike_count <dbl>, favorite_count <dbl>,
-    ## #   comment_count <dbl>, published_at <dttm>, title <chr>, description <chr>,
-    ## #   thumbnail <chr>, channel_title <chr>, category_id <dbl>
+    ## Rows: 247
+    ## Columns: 25
+    ## $ year                      <dbl> 2018, 2020, 2006, 2018, 2003, 2020, 2020, 20…
+    ## $ brand                     <chr> "Toyota", "Bud Light", "Bud Light", "Hynudai…
+    ## $ superbowl_ads_dot_com_url <chr> "https://superbowl-ads.com/good-odds-toyota/…
+    ## $ youtube_url               <chr> "https://www.youtube.com/watch?v=zeBZvwYQ-hA…
+    ## $ funny                     <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, …
+    ## $ show_product_quickly      <lgl> FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE,…
+    ## $ patriotic                 <lgl> FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FA…
+    ## $ celebrity                 <lgl> FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE…
+    ## $ danger                    <lgl> FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE,…
+    ## $ animals                   <lgl> FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE,…
+    ## $ use_sex                   <lgl> FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL…
+    ## $ id                        <chr> "zeBZvwYQ-hA", "nbbp0VW7z8w", "yk0MQD5YgV8",…
+    ## $ kind                      <chr> "youtube#video", "youtube#video", "youtube#v…
+    ## $ etag                      <chr> "rn-ggKNly38Cl0C3CNjNnUH9xUw", "1roDoK-SYqSp…
+    ## $ view_count                <dbl> 173929, 47752, 142310, 198, 13741, 23636, 30…
+    ## $ like_count                <dbl> 1233, 485, 129, 2, 20, 115, 1470, 78, 342, 7…
+    ## $ dislike_count             <dbl> 38, 14, 15, 0, 3, 11, 384, 6, 7, 0, 14, 0, 2…
+    ## $ favorite_count            <dbl> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+    ## $ comment_count             <dbl> NA, 14, 9, 0, 2, 13, 227, 6, 30, 0, 8, 1, 13…
+    ## $ published_at              <dttm> 2018-02-03 11:29:14, 2020-01-31 21:04:13, 2…
+    ## $ title                     <chr> "Toyota Super Bowl Commercial 2018 Good Odds…
+    ## $ description               <chr> "Toyota Super Bowl Commercial 2018 Good Odds…
+    ## $ thumbnail                 <chr> "https://i.ytimg.com/vi/zeBZvwYQ-hA/sddefaul…
+    ## $ channel_title             <chr> "Funny Commercials", "VCU Brandcenter", "Joh…
+    ## $ category_id               <dbl> 1, 27, 17, 22, 24, 1, 24, 2, 24, 24, 24, 24,…
 
 ``` r
 names(youtube)
@@ -130,18 +139,15 @@ names(youtube)
     ## [23] "thumbnail"                 "channel_title"            
     ## [25] "category_id"
 
-We chose to use the Superbowl Ad dataset. The dataset came from
-FiveThirtyEight, but it was originally sourced from superbowl-ads.com.
-The dataset has 247 rows and 25 columns. The variable names include
-year, brand, superbowl\_ads\_dot\_com\_url, youtube\_url, funny,
-show\_product\_quickly, patriotic, celebrity, danger, animals, use\_sex,
-id, kind, etag, view\_count, like\_count, dislike\_count,
-favorite\_count, comment\_count, published\_at, title, description,
-thumbnail, channel\_title, and category\_id. We chose to use this
-dataset because we all love Superbowl ads, and we were initially
-interested in viewing trends over time. This dataset has a variable
-dedicated to the ad’s published date and several variables surrounding
-viewer preferences.
+We chose to use the Superbowl Ad dataset which contains a list of ads
+from the 10 brands that had the most advertisements in Super Bowls from
+2000 to 2020. The dataset came from FiveThirtyEight, but it was
+originally sourced from superbowl-ads.com. The dataset has 247 rows and
+25 columns. Each row represents an Superbowl ad aired between 2000 to
+2020 with 25 characteristics. We chose to use this dataset because we
+all love Superbowl ads, and we were initially interested in viewing
+trends over time. This dataset has a variable dedicated to the ad’s
+published date and several variables surrounding viewer preferences.
 
 ## Questions
 
@@ -155,11 +161,11 @@ characteristics over time, we should be able to see how companies have
 changed their approach to advertising. It is difficult to say how all of
 these different content types have changed over time, but we do believe
 that use patriotic marketing has likely decreased recently. We look
-forward ot exploring whether this hypothesis is correct and seeing how
+forward to exploring whether this hypothesis is correct and seeing how
 the patterns of the variables have changed as well.
 
 ``` r
-Q1data <- youtube %>% 
+Q1data <- youtube %>%
   select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count, year)
 
 glimpse(Q1data)
@@ -184,7 +190,7 @@ live television.
 #### Question 2
 
 For our second question, we would like to explore which brands are most
-popular amongst viewers on Youtube. Specifically, for each brand
+popular among viewers on Youtube. Specifically, for each brand
 represented in the data, we plan to look at what proportion of the
 reactions (likes + dislikes) each brand receives on their Super Bowl
 commercials. We plan to look at the proportion of likes, on average,

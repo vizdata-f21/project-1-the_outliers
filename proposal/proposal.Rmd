@@ -4,36 +4,39 @@ author: "The Outliers"
 output: github_document
 ---
 
-```{r load-packages, message = FALSE}
+## Load Packages
+
+```{r load-packages, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(dplyr)
 ```
 
 ## Dataset
 
-```{r read-data}
-youtube <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+```{r read-data, warning=FALSE, show_col_types = FALSE}
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
 summary(youtube)
-head(youtube)
+glimpse(youtube)
 names(youtube)
 ```
-We chose to use the Superbowl Ad dataset. The dataset came from FiveThirtyEight, but it was originally sourced from superbowl-ads.com.  The dataset has 247 rows and 25 columns. The variable names include year, brand, superbowl_ads_dot_com_url, youtube_url, funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, id, kind, etag, view_count, like_count, dislike_count, favorite_count, comment_count, published_at, title, description, thumbnail, channel_title, and category_id. We chose to use this dataset because we all love Superbowl ads, and we were initially interested in viewing trends over time. This dataset has a variable dedicated to the ad’s published date and several variables surrounding viewer preferences. 
+We chose to use the Superbowl Ad dataset which contains a list of ads from the 10 brands 
+that had the most advertisements in Super Bowls from 2000 to 2020. The dataset came from FiveThirtyEight, but it was originally sourced from superbowl-ads.com.  The dataset has 247 rows and 25 columns. Each row represents an Superbowl ad aired 
+between 2000 to 2020 with 25 characteristics. We chose to use this dataset because we all love Superbowl ads, and we were initially interested in viewing trends over time. This dataset has a variable dedicated to the ad’s published date and several variables surrounding viewer preferences. 
 
 ## Questions
 
 
 #### Question 1 
 
-We would like to explore how content trends change over time. We will leverage the following variables to answer this question: `funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`, `animals`, `use_sex`, `like_count year`. By examining the prevalence of these characteristics over time, we should be able to see how companies have changed their approach to advertising. It is difficult to say how all of these different content types have changed over time, but we do believe that use patriotic marketing has likely decreased recently. We look forward ot exploring whether this hypothesis is correct and seeing how the patterns of the variables have changed as well.
+We would like to explore how content trends change over time. We will leverage the following variables to answer this question: `funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`, `animals`, `use_sex`, `like_count year`. By examining the prevalence of these characteristics over time, we should be able to see how companies have changed their approach to advertising. It is difficult to say how all of these different content types have changed over time, but we do believe that use patriotic marketing has likely decreased recently. We look forward to exploring whether this hypothesis is correct and seeing how the patterns of the variables have changed as well.
 
 
-```{r Q1-variables}
+```{r Q1-variables, warning=FALSE}
 
-Q1data <- youtube %>% 
+Q1data <- youtube %>%
   select(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, like_count, year)
 
 glimpse(Q1data)
-
 ```
 
 We chose not to use published_date for our time series analyses because some of the videos were uploaded
@@ -41,19 +44,18 @@ years later than they initially ran on live television.
 
 #### Question 2
 
-For our second question, we would like to explore which brands are most popular amongst viewers on Youtube. Specifically, for each brand represented in the data, we plan to look at what proportion of the reactions (likes + dislikes) each brand receives on their Super Bowl commercials. We plan to look at the proportion of likes, on average, over the history of the dataset. We may also explore how the proportion of likes changes over time, as some brands may have increased / decreased in popularity over time. 
+For our second question, we would like to explore which brands are most popular among viewers on Youtube. Specifically, for each brand represented in the data, we plan to look at what proportion of the reactions (likes + dislikes) each brand receives on their Super Bowl commercials. We plan to look at the proportion of likes, on average, over the history of the dataset. We may also explore how the proportion of likes changes over time, as some brands may have increased / decreased in popularity over time. 
 
 We would like to explore this question because we are interested in discovering which brands are received best by those who watch Super Bowl commercials. That way, next time we all watch the Super Bowl, we know which ads are likely to be best. This analysis should also provide some insight into which brands are more popular generally, which should be interesting to see as well. 
 
 
 
-```{r Q2-variables}
+```{r Q2-variables, warning=FALSE}
 
 Q2data <- youtube %>%
   select(brand, like_count, dislike_count, year)
 
 glimpse(Q2data)
-
 ```
 
 We chose not to use `published_date` for our time series analyses because some of the videos were uploaded
@@ -75,5 +77,3 @@ To address Question 2, we plan on creating two plots:
 
 
   Both of our questions use the variables in the original dataset: Superbowl Ads. Therefore, we do not need to merge any external data.
-
-
