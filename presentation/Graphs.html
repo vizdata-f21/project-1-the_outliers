@@ -352,21 +352,93 @@ pre code {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-</div>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## Warning in system(&quot;timedatectl&quot;, intern = TRUE): running command &#39;timedatectl&#39;
+## had status 1</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.1     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)</code></pre>
 <div id="plots" class="section level2">
 <h2>Plots</h2>
+<pre class="r"><code>youtube &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv&quot;)</code></pre>
+<pre><code>## Rows: 247 Columns: 25</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (10): brand, superbowl_ads_dot_com_url, youtube_url, id, kind, etag, ti...
+## dbl   (7): year, view_count, like_count, dislike_count, favorite_count, comm...
+## lgl   (7): funny, show_product_quickly, patriotic, celebrity, danger, animal...
+## dttm  (1): published_at</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>glimpse(youtube)</code></pre>
+<pre><code>## Rows: 247
+## Columns: 25
+## $ year                      &lt;dbl&gt; 2018, 2020, 2006, 2018, 2003, 2020, 2020, 20…
+## $ brand                     &lt;chr&gt; &quot;Toyota&quot;, &quot;Bud Light&quot;, &quot;Bud Light&quot;, &quot;Hynudai…
+## $ superbowl_ads_dot_com_url &lt;chr&gt; &quot;https://superbowl-ads.com/good-odds-toyota/…
+## $ youtube_url               &lt;chr&gt; &quot;https://www.youtube.com/watch?v=zeBZvwYQ-hA…
+## $ funny                     &lt;lgl&gt; FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, …
+## $ show_product_quickly      &lt;lgl&gt; FALSE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE,…
+## $ patriotic                 &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FA…
+## $ celebrity                 &lt;lgl&gt; FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, TRUE…
+## $ danger                    &lt;lgl&gt; FALSE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE,…
+## $ animals                   &lt;lgl&gt; FALSE, FALSE, TRUE, FALSE, TRUE, TRUE, TRUE,…
+## $ use_sex                   &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FAL…
+## $ id                        &lt;chr&gt; &quot;zeBZvwYQ-hA&quot;, &quot;nbbp0VW7z8w&quot;, &quot;yk0MQD5YgV8&quot;,…
+## $ kind                      &lt;chr&gt; &quot;youtube#video&quot;, &quot;youtube#video&quot;, &quot;youtube#v…
+## $ etag                      &lt;chr&gt; &quot;rn-ggKNly38Cl0C3CNjNnUH9xUw&quot;, &quot;1roDoK-SYqSp…
+## $ view_count                &lt;dbl&gt; 173929, 47752, 142310, 198, 13741, 23636, 30…
+## $ like_count                &lt;dbl&gt; 1233, 485, 129, 2, 20, 115, 1470, 78, 342, 7…
+## $ dislike_count             &lt;dbl&gt; 38, 14, 15, 0, 3, 11, 384, 6, 7, 0, 14, 0, 2…
+## $ favorite_count            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ comment_count             &lt;dbl&gt; NA, 14, 9, 0, 2, 13, 227, 6, 30, 0, 8, 1, 13…
+## $ published_at              &lt;dttm&gt; 2018-02-03 11:29:14, 2020-01-31 21:04:13, 2…
+## $ title                     &lt;chr&gt; &quot;Toyota Super Bowl Commercial 2018 Good Odds…
+## $ description               &lt;chr&gt; &quot;Toyota Super Bowl Commercial 2018 Good Odds…
+## $ thumbnail                 &lt;chr&gt; &quot;https://i.ytimg.com/vi/zeBZvwYQ-hA/sddefaul…
+## $ channel_title             &lt;chr&gt; &quot;Funny Commercials&quot;, &quot;VCU Brandcenter&quot;, &quot;Joh…
+## $ category_id               &lt;dbl&gt; 1, 27, 17, 22, 24, 1, 24, 2, 24, 24, 24, 24,…</code></pre>
+<div id="question-1" class="section level3">
+<h3>Question 1</h3>
+<p>To address Question 1, we will first have to create a new variable that counts the occurrence of different content types for each year in the dataset. There are 7 different content types (funny, show_product_quickly, patriotic, celebrity, danger, animals, or use_sex) and so we will generate 7 new variables (funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count) that count the occurrence of each of these content tags. For example, if there are 7 commercials in 2000 that are tagged as funny, the new variable funny_count will equal 7 for that year. Videos that do not have content tags will be completely omitted from the analysis.</p>
+<pre class="r"><code>youtube %&gt;%
+  group_by(year) %&gt;%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex))</code></pre>
+<pre><code>## # A tibble: 21 × 8
+##     year funny_count show_product_quickly_count patriotic_count celebrity_count
+##    &lt;dbl&gt;       &lt;int&gt;                      &lt;int&gt;           &lt;int&gt;           &lt;int&gt;
+##  1  2000           8                          5               0               0
+##  2  2001          10                          4               1               6
+##  3  2002           8                          7               1               2
+##  4  2003          11                         10               0               2
+##  5  2004          10                          7               1               2
+##  6  2005          11                          8               0               6
+##  7  2006           7                          5               0               2
+##  8  2007           9                         11               2               2
+##  9  2008          11                         11               3               5
+## 10  2009          11                         12               3               2
+## # … with 11 more rows, and 3 more variables: danger_count &lt;int&gt;,
+## #   animals_count &lt;int&gt;, use_sex_count &lt;int&gt;</code></pre>
+<p>line graph of content type prevalency over time</p>
+<p>The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (prevalence has increased / decreased significantly, prevalence fluctuates significantly, etc.). For all the videos that contain the category we choose, we will use geom_point to look at the relationship between like_count (x-axis) and view_count (y-axis). In addition, we will color the observations by brand to see if there is any interaction there with respect to this relationship. This way we can identify any brands that have unique relationships between like_counts and view_counts in the content area of our choosing, which may help explain whatever pattern we originally identify.</p>
+</div>
+<div id="question-2" class="section level3">
+<h3>Question 2</h3>
+</div>
 </div>
 
 
