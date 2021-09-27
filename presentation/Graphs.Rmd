@@ -17,12 +17,29 @@ When you click the **Knit** button a document will be generated that includes bo
 summary(cars)
 ```
 
-## Including Plots
+## Plots
 
-You can also embed plots, for example:
+```{r wrangling_q1}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r q1_graph_1}
+
+```
+
+```{r q1_graph_2}
+
+```
+
+```{r wranging_q2}
+
+```
+
+```{r q2_graph_1 }
+
+```
+
+```{r q2_graph_2}
+
+```
+
