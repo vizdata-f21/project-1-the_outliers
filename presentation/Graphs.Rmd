@@ -27,7 +27,7 @@ To address Question 1, we will first have to create a new variable that counts t
 
 
 ```{r wrangling_q1}
-youtube %>%
+youtube <- youtube %>%
   group_by(year) %>%
   summarise(funny_count = sum(funny),
             show_product_quickly_count = sum(show_product_quickly),
@@ -41,7 +41,7 @@ youtube %>%
 line graph of content type prevalency over time
 
 ```{r q1_graph_1}
-
+ggplot(youtube, x = year, y = )
 ```
 
 
