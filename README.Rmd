@@ -1,6 +1,6 @@
 ---
-title: Project title
-author: by Team name
+title: Superbowl Ads 
+author: The Outliers
 output: github_document
 ---
 
