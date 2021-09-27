@@ -406,8 +406,8 @@ library(ggplot2)</code></pre>
 ## $ thumbnail                 &lt;chr&gt; &quot;https://i.ytimg.com/vi/zeBZvwYQ-hA/sddefaul…
 ## $ channel_title             &lt;chr&gt; &quot;Funny Commercials&quot;, &quot;VCU Brandcenter&quot;, &quot;Joh…
 ## $ category_id               &lt;dbl&gt; 1, 27, 17, 22, 24, 1, 24, 2, 24, 24, 24, 24,…</code></pre>
-<div id="question-1" class="section level3">
-<h3>Question 1</h3>
+<div id="question-1-hi" class="section level3">
+<h3>Question 1 hi</h3>
 <p>To address Question 1, we will first have to create a new variable that counts the occurrence of different content types for each year in the dataset. There are 7 different content types (funny, show_product_quickly, patriotic, celebrity, danger, animals, or use_sex) and so we will generate 7 new variables (funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count) that count the occurrence of each of these content tags. For example, if there are 7 commercials in 2000 that are tagged as funny, the new variable funny_count will equal 7 for that year. Videos that do not have content tags will be completely omitted from the analysis.</p>
 <pre class="r"><code>youtube &lt;- youtube %&gt;%
   group_by(year) %&gt;%
