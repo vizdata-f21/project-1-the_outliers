@@ -1,6 +1,6 @@
-Project title
+Superbowl Ads
 ================
-by Team name
+The Outliers
 
 ## Introduction
 
@@ -10,7 +10,7 @@ dataset on the TidyTuesday repository, paraphrasing on your own terms.
 Imagine that your project is a standalone document and the grader has no
 prior knowledge of the dataset.
 
-## Question 1 &lt;- Update title to relate to the question you’re answering
+## Question 1 \<- Update title to relate to the question you’re answering
 
 ### Introduction
 
@@ -42,7 +42,7 @@ R or lattice plotting functions.
 your analysis. Identify any trends revealed (or not revealed) by the
 plots. Speculate about why the data looks the way it does.
 
-## Question 2 &lt;- Update title to relate to the question you’re answering
+## Question 2 \<- Update title to relate to the question you’re answering
 
 ### Introduction
 

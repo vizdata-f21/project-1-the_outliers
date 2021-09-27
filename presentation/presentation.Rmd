@@ -1,7 +1,7 @@
 ---
-title: "Presentation title"
-subtitle: "Presentation subtitle (if any)"
-author: "Team name <br> Names of team members"
+title: "The Battle of the Superbowl Ads"
+subtitle: "Who will persevere?"
+author: "The Outliers <br> Davis Jones, Kate Straneva, Hebron Daniel, Sophie Dalldorf"
 institute: "Duke University"
 date: "`r Sys.Date()`"
 output:
