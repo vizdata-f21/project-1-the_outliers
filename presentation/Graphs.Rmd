@@ -35,13 +35,18 @@ youtube <- youtube %>%
             celebrity_count = sum(celebrity),
             danger_count = sum(danger),
             animals_count = sum(animals),
-            use_sex_count = sum(use_sex))
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+youtube
 ```
 
 line graph of content type prevalency over time
 
 ```{r q1_graph_1}
-ggplot(youtube, x = year, y = )
+ggplot(data = youtube, aes(x = year, y = value, color = type)) +
+  geom_line() +
+  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
 ```
 
 
