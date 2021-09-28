@@ -52,7 +52,28 @@ ggplot(data = youtube, aes(x = year, y = value, color = type)) +
 
 The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (prevalence has increased / decreased significantly, prevalence fluctuates significantly, etc.). For all the videos that contain the category we choose, we will use geom_point to look at the relationship between like_count (x-axis) and view_count (y-axis). In addition, we will color the observations by brand to see if there is any interaction there with respect to this relationship. This way we can identify any brands that have unique relationships between like_counts and view_counts in the content area of our choosing, which may help explain whatever pattern we originally identify.
 
+
+Based on our first plot, we found that danger_count, show_product_quickly_count, and 
+celebrity count had interesting trends. We will do a deep dive into these 
+categories to explore the relationship between like_count and view count. 
+
 ```{r q1_graph_2}
+
+ya_youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
+
+ya_youtube %>%
+  filter(show_product_quickly  == TRUE, 
+         danger == TRUE, 
+         celebrity == TRUE)
+
+
+ggplot(data = ya_youtube, aes(x = like_count, y = view_count, color = brand)) +
+  geom_point() + 
+  labs(title = "Proportion of Likes/Dislikes Over time for ads containing danger,
+       celebrities, and shows_product_quickly", x = "Like_Count", y = "View_Count") + theme_minimal()
+
+
+
 
 ```
 
@@ -60,15 +81,69 @@ The second plot will be a deep dive into one content area. After creating the fi
 
 ### Question 2
 
+
+
+
+
 ```{r wranging_q2}
 
 ```
+
+For the first step of our analysis, we will look at the proportion of
+likes each brand receives in a new variable called
+`proportion_likes_total`. To calculate this variable, we first need to
+sum the total number of likes and dislikes each brand receives across
+all of its advertisements in the dataset. We will then calculate
+`proportion_likes_total` for each brand based on the cumulative
+proportion of likes to total reactions (likes + dislikes). To visualize
+this information, each of the 10 brand’s proportion of likes will be
+represented in a stacked bar chart. We will determine the appropriate
+axis orientation for this information once we have started our analysis.
 
 ```{r q2_graph_1 }
 
 ```
 
-```{r q2_graph_2}
 
+Based on our findings in the previous analysis the top 3 brands are kia, nfl, 
+and pesi. 
+
+Our second plot will explore like/dislike trends by brand over time. We
+are going to pick the top three brands based on our previous analysis
+(highest proportion of likes). To see how brand popularity has changed
+over time, we will need to create a new variable for the brands we
+select: `proportion_likes_yearly`. Unlike the variable used in the first
+visualization, this variable will look at the proportion of likes each
+brand receives for each year they are represented in the dataset. In
+this case, `proportion_likes_yearly` will be on the y-axis, and `year`
+will be on the x-axis. This graph will show us trends in the proportion
+of likes for the three most popular brands. One issue we may run into is
+that every brand we select may not have a commercial from each year. We
+may have to carefully select the time period we represent in our
+analysis so that each brand has an observation for every year we plot.
+
+Both of our questions use the variables in the original dataset:
+Superbowl Ads. Therefore, we do not need to merge any external data.
+
+```{r Q2_graph_2_data_wrangling}
+
+youtube2 <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
+
+youtube2 <- youtube2 %>%
+  filter(brand == c("Kia", "NFL", "Pepsi"))%>%
+  group_by(year, brand) %>%
+  summarise(total_dislikes = sum(dislike_count), 
+            total_likes = sum(like_count))
+                                 
+
+youtube2 <- youtube2 %>%
+  mutate(proportion_likes_yearly = total_likes / (total_likes + total_dislikes))
+
+youtube2 
+```
+```{r q2_graph_2}
+ggplot(data = youtube2, aes(x = year, y = proportion_likes_yearly, color = brand)) +
+  geom_point() + 
+  labs(title = "Proportion of Likes/Dislikes over time for the top 3 Brands", x = "Year", y = "Count") + theme_minimal()
 ```
 
