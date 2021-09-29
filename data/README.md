@@ -1,9 +1,6 @@
 # Super bowl Data
-Place data file(s) in this folder.
 
-Then, include metadata about your dataset including information on provenance, codebook, etc.
-
-The codebook for your data file(s) using the following format.
+Data Dctionary Below
 
 ## Name: superbowldata.csv
 
