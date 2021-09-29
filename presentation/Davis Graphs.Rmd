@@ -43,7 +43,8 @@ ggplot(q2_part1_data, aes(x = proportion_likes_total, y = brand)) +
   labs(title = "Proportion of likes received out of total video interactions (likes + dislikes)", x = "Proportion of likes out of total interactions", 
        y = "Brand") + 
     theme(panel.background = element_blank(), axis.ticks.y = element_blank(),
-          axis.text.y = element_text(size = 12), 
+          axis.text.y = element_text(size = 11, color = "black"), 
+          axis.text.x = element_text(size = 11, color = "black"),
           axis.title.x = element_text(size = 12),
           axis.title.y = element_text(size = 12))
 ```
