@@ -17,33 +17,21 @@ library(gridExtra)
 library(emojifont)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Q2 Wrangling
 
 ```{r q2-data-wrangling}
-youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv", 
+                           show_col_types = FALSE)
 
 q2_part1_data <- filter(youtube, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
   group_by(brand) %>%
   mutate(likes_total = sum(like_count),
          dislikes_total = sum(dislike_count),
-         proportion_likes_total = likes_total / (dislikes_total + likes_total),
-         emoji_icon = emoji('football'),
-         size_number = 1)
+         proportion_likes_total = likes_total / (dislikes_total + likes_total))
 
-#q2_part1_data <- q2_part1_data %>%
- # pivot_longer(cols = bra)
-
-#q2_part2_data <- youtube %>%
-  #group_by(brand) %>%
- # mutate(proportion_likes_yearly = like_count / 
-           #(like_count + dislike_count))
 ```
 
-## Including Plots
+## Q2 Plot
 
 
 ```{r q1-plot1, echo=FALSE}
@@ -51,35 +39,30 @@ q2_part1_data <- filter(youtube, like_count != is.na(like_count) & dislike_count
 ggplot(q2_part1_data, aes(x = proportion_likes_total, y = brand)) + 
     geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) + 
   geom_point(color = "dodgerblue1", size = 3) + 
-  theme(panel.background = element_blank(), 
-        axis.ticks.y = element_blank() ) +
   coord_cartesian(xlim = c(.75, 1)) + 
-  labs(title = "Proportion of likes received out of total video interactions (likes + dislikes", x = "Proportion of likes", 
-       y = "Brand")
+  labs(title = "Proportion of likes received out of total video interactions (likes + dislikes)", x = "Proportion of likes out of total interactions", 
+       y = "Brand") + 
+    theme(panel.background = element_blank(), axis.ticks.y = element_blank(),
+          axis.text.y = element_text(size = 12), 
+          axis.title.x = element_text(size = 12),
+          axis.title.y = element_text(size = 12))
 ```
 
-```{r}
 
-q2_part1_datav2 <- filter(youtube, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
-  group_by(brand) %>%
-  mutate(likes_total = sum(like_count),
-         dislikes_total = sum(dislike_count),
-         proportion_likes_total = likes_total / (dislikes_total + likes_total),
-         emoji_icon = case_when(
-           brand == "Kia" ~ "🚗",
-           brand == "NFL" ~ "🏈",
-           brand == "Pepsi" ~ "🥤",
-           brand == "E-Trade" ~ "📈",
-           brand == "Hynudai" ~ "🚗",
-           brand == "Toyota" ~ "🚗",
-           brand == "Bud Light" ~ "🍺",
-           brand == "Budweiser" ~ "🍺",
-           brand == "Coca-Cola" ~ "🥤",
-           brand == "Doritos" ~ "🍟"))
+## Q2 Approach
+
+Graph 1:
+Originally, for our first graph, we planned to use a 100% stacked bar chart to compare the proportion of likes out of total reactions received by each brand for all commercials in the dataset. When we tried this, however, the visualization looked very crowded. We instead decided that a lollipop plot of the proportion of likes out of total interactions looked more pleasing. The lollipop plot is effective in this case, as it clearly demonstrates which brands received a higher relative number of likes. In addition, this plot has a fairly reasonable data-to-ink ratio and the use of lines, as opposed to bars, creeates a less crowded appearance.
+
+Graph 2:
+[ ]
 
 
-ggplot(q2_part1_datav2, aes(x = proportion_likes_total, y = brand, label = emoji_icon)) + 
-    geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total)) + 
-  geom_text(aes(label = emoji_icon))
-```
+## Q2 Discussion
+
+Graph 1:
+
+By taking a quick glance at the first visualization, it is clear that Kia, the NFL, Pepsi, and E-Trade seem to be most well-received by the viewing audience, as indicated by their high proportions of likes to total reactions. On the other hand, the graph makes it clear that Super Bowl commercials from Budweiser, Coca-Cola, and Doritos seem to receive the least number of likes relative to total interactions. With that being said, it appears that all of the brands included seem to be generally well received by their audiences, as they all have like-to-total-reaction proportions greater than .75. This is to be somewhat expected, as Super Bowl commercials tend to stray away from being polarzing or offensive and are therefore not expected to receive many dislikes. 
+
+Graph 2:
 
