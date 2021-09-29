@@ -1,1 +1,93 @@
+---
+title: "Graphs for el prez"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+## Plots
+
+```{r}
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
+glimpse(youtube)
+```
+
+### Question 1 hi
+
+To address Question 1, we will first have to create a new variable that counts the occurrence of different content types for each year in the dataset. There are 7 different content types (funny, show_product_quickly, patriotic, celebrity, danger, animals, or use_sex) and so we will generate 7 new variables (funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count) that count the occurrence of each of these content tags. For example, if there are 7 commercials in 2000 that are tagged as funny, the new variable funny_count will equal 7 for that year. Videos that do not have content tags will be completely omitted from the analysis. 
+
+
+```{r wrangling_q1}
+youtube <- youtube %>%
+  group_by(year) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+youtube
+```
+
+line graph of content type prevalency over time
+
+```{r q1_graph_1}
+ggplot(data = youtube, aes(x = year, y = value, color = type)) +
+  geom_line() +
+  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
+```
+
+
+The second plot will be a deep dive into one content area. After creating the first plot and conducting a simple analysis, we will choose a content area that has an interesting trend (prevalence has increased / decreased significantly, prevalence fluctuates significantly, etc.). For all the videos that contain the category we choose, we will use geom_point to look at the relationship between like_count (x-axis) and view_count (y-axis). In addition, we will color the observations by brand to see if there is any interaction there with respect to this relationship. This way we can identify any brands that have unique relationships between like_counts and view_counts in the content area of our choosing, which may help explain whatever pattern we originally identify.
+
+```{r q1_graph_2}
+
+```
+
+
+
+### Question 2
+
+```{r wranging_q2}
+
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
+
+q2_part1_data <- filter(youtube, like_count != is.na(like_count) &
+                          dislike_count != is.na(dislike_count)) %>%
+  group_by(brand) %>%
+  mutate(likes_total = sum(like_count),
+         dislikes_total = sum(dislike_count),
+         proportion_likes_total = likes_total / (dislikes_total + likes_total))
+
+q2_part2_data <- youtube %>%
+  group_by(brand) %>%
+  group_by(year) %>%
+  mutate(proportion_likes_yearly = like_count / sum(like_count,
+                                                    dislike_count))
+
+
+```
+
+```{r q2_graph_1 }
+
+ggplot(q2_part1_data, aes(x = brand, y = proportion_likes_total)) + 
+  geom_point() 
+
+```
+
+```{r q2_graph_2}
+
+```
 
