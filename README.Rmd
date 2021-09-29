@@ -14,17 +14,17 @@ output: github_document
 
 ## Introduction
 
-(1-2 paragraphs)
-Brief introduction to the dataset.
-You may repeat some of the information about the dataset provided in the introduction to the dataset on the TidyTuesday repository, paraphrasing on your own terms.
-Imagine that your project is a standalone document and the grader has no prior knowledge of the dataset.
+Every year millions of Americans tune into the most watched  television broadcast in the United States — the Super Bowl. The Super Bowl is the NFL championship game, pitting the winners of the two major conferences, the AFC and the NFC, in a final showdown for all the glory. Due to the game’s high viewership, many brands use the occasion to advertise their products as a means to generate hype and exposure around their brands. In fact, Super Bowl commercials have been regarded as such a cultural phenomenon that many viewers only watch the games to see the beloved commercials. The invaluable exposure the Super Bowl brings to brands also comes with a hefty price as In 2021 alone the cost for a 30-second slot boasted an incredible price tag of $6 million.
 
-## Question 1 <- Update title to relate to the question you’re answering
+Using a FiveThirtyEight dataset of 233 ads from 10 brands that aired the most spots since 2000 we decided to explore the themes that make Super Bowl ads so popular. The dataset includes categorical variables used to classify each ad as funny, show_product_quickly, patriotic, celebrity, danger, animals and/or use_sex. while also including variables that that we will use to explore popularity such as year, brand, view_count, like_count, dislike_count, favorite_count, and comment_count. We chose to use this dataset because we — like millions other Americans – love Super Bowl ads, and interested in viewing trends over time.
+
+
+## Exploring trends in themes over time
 
 ### Introduction
 
-(1-2 paragraphs)
-Introduction to the question and what parts of the dataset are necessary to answer the question. Also discuss why you’re interested in this question.
+We first explore the themes featured in Super Bowl ads and how they have changed over the last 21 years by leveraging the following variables: funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, year. Each variable (except for year) answers whether or not that specific characteristic was featured in the ad. For example, if an ad contains a celebrity appearance then there is a “yes” inputted for that brands’s commercial. Furthermore, a commercial can feature multiple characteristics such as being funny while using patriotism to raise awareness for said product. We are interested in seeing the changes in commercial advertising over time and predict that patriotic themes have become less prominent over time. 
+
 
 ### Approach
 
