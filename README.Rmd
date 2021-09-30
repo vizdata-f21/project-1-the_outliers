@@ -94,6 +94,7 @@ q1_p1_data <- superbowl_data %>%
             animals_count = sum(animals),
             use_sex_count = sum(use_sex)) %>%
   pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") +
