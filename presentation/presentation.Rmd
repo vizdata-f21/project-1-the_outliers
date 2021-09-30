@@ -16,8 +16,6 @@ output:
 ---
 
 ```{r load-packages, include = FALSE}
-# Add any additional packages you need to this chunk
-# Remove any packages from this list that you're not using
 library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
@@ -114,7 +112,12 @@ ggplot(data = youtube, aes(x = year, y = value, color = type)) +
 ]
 
 .pull-right[
-this will be our description
+Analysis:
+
+- hello
+- how's it going
+- who's up
+
 
 ]
 
@@ -134,7 +137,11 @@ scale_xaringan_fill_discrete()
 ]
 
 .pull-right[
-this will be our description
+Analysis:
+
+- hello
+- how's it going
+- who's up
 
 ]
 
@@ -164,7 +171,11 @@ scale_xaringan_fill_discrete()
 ]
 
 .pull-right[
-this will be our description
+Analysis:
+
+- hello
+- how's it going
+- who's up
 
 ]
 
@@ -187,7 +198,11 @@ scale_xaringan_fill_discrete()
 ]
 
 .pull-right[
-this will be our description
+Analysis:
+
+- hello
+- how's it going
+- who's up
 
 ]
 

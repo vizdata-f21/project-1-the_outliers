@@ -101,7 +101,10 @@ q1_p1_data <- superbowl_data %>%
 
 
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +
+  theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") +
+  transition_states(year, transition_length = 0 , state_length = 2 ) + 
+  scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
         nframes = 100, # 200 frames
