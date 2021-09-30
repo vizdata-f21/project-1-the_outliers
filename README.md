@@ -51,13 +51,44 @@ The Outliers
 
 ## Introduction
 
-\[add in Hebron’s work\]
+Every year millions of Americans tune into the most watched television
+broadcast in the United States — the Super Bowl. The Super Bowl is the
+NFL championship game, pitting the winners of the two major conferences,
+the AFC and the NFC, in a final showdown for all the glory. Due to the
+game’s high viewership, many brands use the occasion to advertise their
+products as a means to generate hype and exposure around their brands.
+In fact, Super Bowl commercials have been regarded as such a cultural
+phenomenon that many viewers only watch the games to see the beloved
+commercials. The invaluable exposure the Super Bowl brings to brands
+also comes with a hefty price as In 2021 alone the cost for a 30-second
+slot boasted an incredible price tag of $6 million.
+
+Using a FiveThirtyEight dataset of 233 ads from 10 brands that aired the
+most spots since 2000 we decided to explore the themes that make Super
+Bowl ads so popular. The dataset includes categorical variables used to
+classify each ad as `funny`, `show_product_quickly`, `patriotic`,
+`celebrity`, `danger`, `animals` and/or `use_sex`. while also including
+variables that that we will use to explore popularity such as `year`,
+`brand`, `view_count`, `like_count`, `dislike_count`, `favorite_count`,
+and `comment_count`. We chose to use this dataset because we — like
+millions other Americans – love Super Bowl ads, and interested in
+viewing trends over time.
 
 ## Exploring how Super Bowl commercial content trends change over time
 
 ### Introduction
 
-\[add in Hebron’s work\]
+We first explore the themes featured in Super Bowl ads and how they have
+changed over the last 21 years by leveraging the following variables:
+`funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`,
+`animals`,`use_sex`, and `year`. Each variable (except for year) answers
+whether or not that specific characteristic was featured in the ad. For
+example, if an ad contains a celebrity appearance then there is a “yes”
+inputted for that brands’s commercial. Furthermore, a commercial can
+feature multiple characteristics such as being funny while using
+patriotism to raise awareness for said product. We are interested in
+seeing the changes in commercial advertising over time and predict that
+patriotic themes have become less prominent over time.
 
 ### Approach
 
@@ -106,12 +137,19 @@ q1_p2_data <- superbowl_data %>%
 
 ``` r
 ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
-  geom_point() + 
-  labs(title = "Proportion of Likes/Dislikes Over time for ads containing danger,
-       celebrities, and shows_product_quickly", x = "Like_Count", y = "View_Count") + theme_minimal()
+  geom_point(show.legend = FALSE) + 
+  labs(title = "Relationship between view and like count for selected content categories",
+       x = "Like_Count", y = "View_Count",
+       subtitle = "Selected Content: show_product_quickly, danger, celebrity") + 
+  theme_minimal() +
+  scale_y_log10() +
+  scale_x_log10() +
+  geom_text_repel(aes(label = brand), show.legend = FALSE) 
 ```
 
     ## Warning: Removed 1 rows containing missing values (geom_point).
+
+    ## Warning: Removed 1 rows containing missing values (geom_text_repel).
 
 ![](README_files/figure-gfm/q1_p2_graph-1.png)<!-- -->
 
@@ -157,21 +195,19 @@ q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_c
 
 ``` r
 q2_p2_data <- superbowl_data %>%
-  filter(brand == c("Kia", "NFL", "Pepsi", "E-Trade"))%>%
+  filter(brand == c("Kia", "Pepsi", "E-Trade"))%>%
   group_by(year, brand) %>%
   mutate(proportion_likes_yearly = like_count / (like_count + dislike_count))
 ```
 
-    ## Warning in brand == c("Kia", "NFL", "Pepsi", "E-Trade"): longer object length is
-    ## not a multiple of shorter object length
+    ## Warning in brand == c("Kia", "Pepsi", "E-Trade"): longer object length is not a
+    ## multiple of shorter object length
 
 ``` r
-ggplot(data = q2_p2_data, aes(x = year, y = proportion_likes_yearly, color = brand)) +
-  geom_point() + 
+ggplot(data = q2_p2_data, aes(x = year, y = proportion_likes_yearly, group = brand))  +
+  geom_line() + 
   labs(title = "Proportion of Likes/Dislikes over time for the top 3 Brands", x = "Year", y = "Count") + theme_minimal()
 ```
-
-    ## Warning: Removed 2 rows containing missing values (geom_point).
 
 ![](README_files/figure-gfm/q2_p2_graph-1.png)<!-- -->
 
