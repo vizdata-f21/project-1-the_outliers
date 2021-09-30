@@ -23,7 +23,10 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringan)
-#library(xaringanthemer)
+library(xaringanthemer)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
 ```
 
 ```{r setup, include=FALSE}
@@ -38,165 +41,163 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-data, include=FALSE}
-# Load your data here
+youtube <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
 ```
 
 ```{r style-slides, echo = FALSE}
-style_xaringan(
-  title_slide_background_image = "img/watercolour_sys02_img34_teacup-ocean.jpg"
-)
+
+
+style_duo(primary_color = "#1F4257", secondary_color = "#F97B64",
+          title_slide_background_image = "desktop/superbowl.jpeg")
+
+
+
 ```
 
-class: inverse, middle, center
 
-# Using xaringan
+# Introduction: Superbowl Ads
 
----
+.pull-left[
+About This Data:
 
-## xaringan
+- Came from FiveThirtyEight
 
-- The presentation is created using the `xaringan` package
+- 247 rows and 25 columns
 
-- Use `---` to separate slides and `--` for incremental builds
+- Tells us information about brands, types of videos (funny, patriotic, etc.), years released, likes/dislikes, and more.
+]
 
 --
 
-- Like this
+.pull-right[
+Why This Dataset? 
+
+- We all love Superbowl ads!
+
+- We were interested to see trends over time and explore which brands were most popular!
+]
+---
+
+#Question 1...
+
+- Our first question aims to examine how content trends have changed over time.
+
 
 ---
 
-## Layouts
+## First Plot
 
-You can use plain text
+We first show the number of videos in each category over time:
 
-- or bullet points
+```{r data-wrangling, echo = FALSE}
+youtube <- youtube %>%
+  group_by(year) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+```
 
 .pull-left[
-or text in two columns $^*$
+this will be our graph
+```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
+ggplot(data = youtube, aes(x = year, y = value, color = type)) +
+  geom_line() +
+  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count") +
+  scale_xaringan_fill_discrete()
+```
+
 ]
+
 .pull-right[
-- like
-- this
+this will be our description
+
+]
+
+
+---
+
+## Second Plot
+
+Second, we wanted to conduct a deep dive into one content area's trends, so we created a geom_point graph that shows unique like_counts and view_counts colored by brand.
+
+.pull-left[
+this will be our graph
+```{r}
+scale_xaringan_fill_discrete()
+```
+
+]
+
+.pull-right[
+this will be our description
+
 ]
 
 .footnote[
-[*] And add footnotes
+any footnotes??
+
 ]
 
 ---
 
-## Code
+# Question 2...
 
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
+For our second analysis, we chose to explore which brands are most popular among viewers on Youtube using likes and dislikes.
 
 ---
 
-## Plots
+## First Plot
 
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-penguins_modified <- penguins %>%
-  mutate(species = fct_other(species, keep = "Adelie"))
-```
-
-```{r plot-penguins, echo = FALSE, warning = FALSE, fig.alt = "Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all the others combined together. There is a relatively strong, positive relationship between the two variables. The Adelie penguins are clustered together but they don't exhibit a different trend than the rest of the penguins."}
-# Code hidden with echo = FALSE
-# Uses modified penguins dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(penguins_modified, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point() + 
-  theme_minimal()
-```
-
----
-
-## Plot and text
+This first graph shows the proportion of likes and dislikes for each brand:
 
 .pull-left[
-- Some text
-- goes here
+this will be our graph
+```{r}
+scale_xaringan_fill_discrete()
+```
+
 ]
+
 .pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
-```
+this will be our description
+
+]
+
+.footnote[
+any footnotes??
+
 ]
 
 ---
 
-class: inverse, middle, center
+## Second Plot
 
-# A new section...
+The second plot shows like/dislike trends by brand over time. We picked the top three brands based on the highest proportion of likes and presented them below:
 
----
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r penguins-table, echo = FALSE}
-kable(head(penguins), format = "html")
+.pull-left[
+this will be our graph
+```{r}
+scale_xaringan_fill_discrete()
 ```
+]
+
+.pull-right[
+this will be our description
+
+]
+
+.footnote[
+any footnotes??
+
+]
 
 ---
 
-## Images
-
-```{r castle, echo = FALSE, out.width = "40%", fig.align = "center", fig.cap = "Image credit: Danielle Navarro, Percolate."}
-include_graphics("img/watercolour_sys02_img32_percolate.jpg")
-```
-
-Or you can also include a full page image. See next slide.
+# Questions?
 
 ---
-
-background-image: url(img/watercolour_sys02_img32_percolate.jpg)
-
----
-
-## Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
-
----
-
-class: inverse, middle, center
-
-# Wrap up
-
----
-
-## Feeling adventurous?
-
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
