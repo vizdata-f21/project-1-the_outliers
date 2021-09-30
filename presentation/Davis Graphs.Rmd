@@ -67,3 +67,100 @@ By taking a quick glance at the first visualization, it is clear that Kia, the N
 
 Graph 2:
 
+## Q1 
+
+```{r load-data, echo = FALSE}
+superbowl_data <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv", 
+                           show_col_types = FALSE)
+```
+
+
+```{r q2_g2}
+
+random2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
+                         view_count != is.na(view_count)) %>%
+  group_by(brand) %>%
+  summarise(total_comments = sum(comment_count),
+         total_views = sum(view_count))
+
+ggplot(random2_data, aes(x = total_views, y = total_comments)) + 
+         geom_point(aes(color = brand), show.legend = FALSE) + 
+  geom_text_repel(aes(label = brand)) +
+  scale_y_log10() + 
+  scale_x_log10() +
+  labs(x = "Total Views", y = "Total Comments", 
+       title = "Total Comments vs. Total Views, by brand") 
+
+```
+
+
+```{r}
+q1_p1_data <- superbowl_data %>%
+  group_by(year) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+```
+
+```{r}
+random_data <- filter(superbowl_data, view_count != is.na(view_count)) %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type") %>%
+  group_by(year, type) %>%
+  summarise(total_views = sum(view_count))
+
+
+```{r}
+random_data <- superbowl_data %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex, view_count), names_to = "type") %>%
+  group_by(year) 
+```
+
+```{r}
+
+ggplot(random_data, aes(x = year, y = total_views, fill =  type)) + 
+  geom_col(aes(position = "fill", stat = "identity"))
+```
+
+
+
+
+
+```{r}
+
+ggplot(random_data, aes(x = year, weight = total_views)) + 
+  geom_bar(aes(fill =  type)) +
+
+```
+
+
+
+```{r}
+ggplot(data = filter(q1_p1_data, year == 2000 | year == 2005 | year == 2010 | year == 2015 | year == 2020), aes(x = type, y = value)) +
+  geom_col(aes(fill = type)) +
+  facet_grid(~year) +
+  theme(axis.text.x = element_blank())
+  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
+```
+
+```{r}
+
+ggplot(data = q1_p1_data, aes(x = year, y = value)) +
+  geom_col() +
+  facet_wrap(~type)
+
+```
+
+```{r q1_p1_option1}
+ggplot(data = filter(q1_p1_data, year == 2000 | year == 2005 | year == 2010 | year == 2015 | year == 2020), aes(x = type, y = value)) +
+  geom_col(aes(fill = type)) +
+  facet_grid(~year) +
+  theme(axis.text.x = element_blank())
+  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
+```
+
