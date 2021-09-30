@@ -87,7 +87,7 @@ The two plots should be of different types, and at least one of the two plots ne
 
 #### Wrangling data
 
-```{r q1_p1_wrangling}
+```{r, q1_p1_wrangling}
 
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
@@ -112,7 +112,6 @@ animate(g,
 ```
 
 
-```
 
 #### Visualization one
 

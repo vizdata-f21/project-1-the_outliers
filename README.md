@@ -175,13 +175,9 @@ animate(g,
 
 ![](README_files/figure-gfm/q1_p1_wrangling-1.gif)<!-- -->
 
-```` 
-
 #### Visualization one
 
-
-
-```r
+``` r
 q1_p2_data2 <- superbowl_data%>%
   mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
                                brand == "Kia" ~ "Car",
@@ -207,7 +203,7 @@ q1_p2_data2 <- q1_p2_data2 %>%
   pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
 
 q1_p2_data2
-````
+```
 
     ## # A tibble: 35 × 3
     ##    brand_type type                       value
