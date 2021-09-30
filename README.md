@@ -7,7 +7,7 @@ The Outliers
     ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
     ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
     ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.1     ✓ forcats 0.5.1
+    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
 
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
@@ -165,7 +165,10 @@ q1_p1_data <- superbowl_data %>%
 
 
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +
+  theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") +
+  transition_states(year, transition_length = 0 , state_length = 2 ) + 
+  scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
         nframes = 100, # 200 frames
