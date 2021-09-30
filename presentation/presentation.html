@@ -29,6 +29,7 @@ class: center, middle, inverse, title-slide
 
 
 
+
 # Introduction: Superbowl Ads
 
 .pull-left[
@@ -36,7 +37,7 @@ About This Data:
 
 - Came from FiveThirtyEight
 
-- 247 rows and 25 columns
+- 233 ads from 10 brands that aired the most spots since 2000
 
 - Tells us information about brands, types of videos (funny, patriotic, etc.), years released, likes/dislikes, and more.
 ]
@@ -49,12 +50,12 @@ Why This Dataset?
 - We all love Superbowl ads!
 
 - We were interested to see trends over time and explore which brands were most popular!
+
+- What makes these ads so popular?
 ]
 ---
 
-#Question 1...
-
-- Our first question aims to examine how content trends have changed over time.
+#Question 1: Exploring how Superbowl commerical content trends change over time...
 
 
 ---
@@ -65,14 +66,16 @@ We first show the number of videos in each category over time:
 
 
 
+
+
 .pull-left[
-this will be our graph
-&lt;img src="presentation_files/figure-html/unnamed-chunk-1-1.png" width="100%" /&gt;
+
+&lt;img src="presentation_files/figure-html/q1p1-1.png" width="70%" /&gt;
 
 ]
 
 .pull-right[
-Description:
+Analysis:
 
 - hello
 - how's it going
@@ -88,64 +91,16 @@ Description:
 
 Second, we wanted to conduct a deep dive into one content area's trends, so we created a geom_point graph that shows unique like_counts and view_counts colored by brand.
 
+
+
+
 .pull-left[
-this will be our graph
-
-```r
-scale_xaringan_fill_discrete()
-```
-
-```
-## &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-##     aesthetics: fill
-##     axis_order: function
-##     break_info: function
-##     break_positions: function
-##     breaks: waiver
-##     call: call
-##     clone: function
-##     dimension: function
-##     drop: TRUE
-##     expand: waiver
-##     get_breaks: function
-##     get_breaks_minor: function
-##     get_labels: function
-##     get_limits: function
-##     guide: legend
-##     is_discrete: function
-##     is_empty: function
-##     labels: waiver
-##     limits: NULL
-##     make_sec_title: function
-##     make_title: function
-##     map: function
-##     map_df: function
-##     n.breaks.cache: NULL
-##     na.translate: TRUE
-##     na.value: NA
-##     name: waiver
-##     palette: function
-##     palette.cache: NULL
-##     position: left
-##     range: &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##         range: NULL
-##         reset: function
-##         train: function
-##         super:  &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##     rescale: function
-##     reset: function
-##     scale_name: manual
-##     train: function
-##     train_df: function
-##     transform: function
-##     transform_df: function
-##     super:  &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-```
+&lt;img src="presentation_files/figure-html/q1p2-1.png" width="70%" /&gt;
 
 ]
 
 .pull-right[
-Description:
+Analysis:
 
 - hello
 - how's it going
@@ -160,9 +115,7 @@ any footnotes??
 
 ---
 
-# Question 2...
-
-For our second analysis, we chose to explore which brands are most popular among viewers on Youtube using likes and dislikes.
+# Question 2: Exploring the most popular Super Bowl commercial brands...
 
 ---
 
@@ -170,64 +123,16 @@ For our second analysis, we chose to explore which brands are most popular among
 
 This first graph shows the proportion of likes and dislikes for each brand:
 
+
+
+
 .pull-left[
-this will be our graph
-
-```r
-scale_xaringan_fill_discrete()
-```
-
-```
-## &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-##     aesthetics: fill
-##     axis_order: function
-##     break_info: function
-##     break_positions: function
-##     breaks: waiver
-##     call: call
-##     clone: function
-##     dimension: function
-##     drop: TRUE
-##     expand: waiver
-##     get_breaks: function
-##     get_breaks_minor: function
-##     get_labels: function
-##     get_limits: function
-##     guide: legend
-##     is_discrete: function
-##     is_empty: function
-##     labels: waiver
-##     limits: NULL
-##     make_sec_title: function
-##     make_title: function
-##     map: function
-##     map_df: function
-##     n.breaks.cache: NULL
-##     na.translate: TRUE
-##     na.value: NA
-##     name: waiver
-##     palette: function
-##     palette.cache: NULL
-##     position: left
-##     range: &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##         range: NULL
-##         reset: function
-##         train: function
-##         super:  &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##     rescale: function
-##     reset: function
-##     scale_name: manual
-##     train: function
-##     train_df: function
-##     transform: function
-##     transform_df: function
-##     super:  &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-```
+&lt;img src="presentation_files/figure-html/q2p1-1.png" width="70%" /&gt;
 
 ]
 
 .pull-right[
-Description:
+Analysis:
 
 - hello
 - how's it going
@@ -246,63 +151,14 @@ any footnotes??
 
 The second plot shows like/dislike trends by brand over time. We picked the top three brands based on the highest proportion of likes and presented them below:
 
+
+
 .pull-left[
-this will be our graph
-
-```r
-scale_xaringan_fill_discrete()
-```
-
-```
-## &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-##     aesthetics: fill
-##     axis_order: function
-##     break_info: function
-##     break_positions: function
-##     breaks: waiver
-##     call: call
-##     clone: function
-##     dimension: function
-##     drop: TRUE
-##     expand: waiver
-##     get_breaks: function
-##     get_breaks_minor: function
-##     get_labels: function
-##     get_limits: function
-##     guide: legend
-##     is_discrete: function
-##     is_empty: function
-##     labels: waiver
-##     limits: NULL
-##     make_sec_title: function
-##     make_title: function
-##     map: function
-##     map_df: function
-##     n.breaks.cache: NULL
-##     na.translate: TRUE
-##     na.value: NA
-##     name: waiver
-##     palette: function
-##     palette.cache: NULL
-##     position: left
-##     range: &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##         range: NULL
-##         reset: function
-##         train: function
-##         super:  &lt;ggproto object: Class RangeDiscrete, Range, gg&gt;
-##     rescale: function
-##     reset: function
-##     scale_name: manual
-##     train: function
-##     train_df: function
-##     transform: function
-##     transform_df: function
-##     super:  &lt;ggproto object: Class ScaleDiscrete, Scale, gg&gt;
-```
+&lt;img src="presentation_files/figure-html/q2p2-1.png" width="70%" /&gt;
 ]
 
 .pull-right[
-Description:
+Analysis:
 
 - hello
 - how's it going
@@ -318,8 +174,6 @@ any footnotes??
 ---
 
 # Questions?
-
----
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
