@@ -140,14 +140,14 @@ either color mapping or facets.\]
 ``` r
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
-  summarise(funny_count = sum(funny),
-            show_product_quickly_count = sum(show_product_quickly),
-            patriotic_count = sum(patriotic),
-            celebrity_count = sum(celebrity),
-            danger_count = sum(danger),
-            animals_count = sum(animals),
-            use_sex_count = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+ summarise(funny = sum(funny),
+            show_product_quickly = sum(show_product_quickly),
+            patriotic = sum(patriotic),
+            celebrity = sum(celebrity),
+            danger = sum(danger),
+            animals = sum(animals),
+            use_sex = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
 ```
 
 ``` r
@@ -166,35 +166,18 @@ q1_p2_data2 <- superbowl_data%>%
 
 q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type) %>%
-  summarise(funny_count = sum(funny),
-            show_product_quickly_count = sum(show_product_quickly),
-            patriotic_count = sum(patriotic),
-            celebrity_count = sum(celebrity),
-            danger_count = sum(danger),
-            animals_count = sum(animals),
-            use_sex_count = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+  summarise(funny = sum(funny),
+            show_product_quickly = sum(show_product_quickly),
+            patriotic = sum(patriotic),
+            celebrity = sum(celebrity),
+            danger = sum(danger),
+            animals = sum(animals),
+            use_sex = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
 
-q1_p2_data2
-```
 
-    ## # A tibble: 35 × 3
-    ##    brand_type type                       value
-    ##    <chr>      <chr>                      <int>
-    ##  1 Beverage   funny_count                  107
-    ##  2 Beverage   show_product_quickly_count   109
-    ##  3 Beverage   patriotic_count               27
-    ##  4 Beverage   celebrity_count               44
-    ##  5 Beverage   danger_count                  46
-    ##  6 Beverage   animals_count                 63
-    ##  7 Beverage   use_sex_count                 47
-    ##  8 Car        funny_count                   26
-    ##  9 Car        show_product_quickly_count    25
-    ## 10 Car        patriotic_count                7
-    ## # … with 25 more rows
 
-``` r
-check_it <- q1_p2_data2 %>%
+q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
@@ -217,8 +200,8 @@ animate(g,
 #### Visualization two
 
 ``` r
-ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
-    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
+ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) + 
+    geom_bar(position="stack", stat="identity", color = "black") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad Features by Brand Type", x= "Brand Type", y = "Percentage", fill = "Ad Feature")
 ```
 
 ![](README_files/figure-gfm/viz1-1.png)<!-- -->

@@ -23,7 +23,7 @@ library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringan)
-#library(xaringanthemer)
+#slibrary(xaringanthemer)
 ```
 
 ```{r setup, include=FALSE}
@@ -38,7 +38,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r load-data, include=FALSE}
-# Load your data here
+superbowl_data <- read_csv("data/superbowldata.csv")
 ```
 
 ```{r style-slides, echo = FALSE}
