@@ -146,7 +146,7 @@ check_it <- q1_p2_data2 %>%
 
 .pull-left[
 
-```{r q1p1, echo = FALSE}
+```{r q1p1, out.width="100%", fig.width=4, echo = FALSE}
 ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
     geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
 ```
@@ -210,7 +210,7 @@ check_it <- q1_p2_data2 %>%
 
 
 .pull-left[
-```{r q1p2, echo = FALSE, warning = FALSE, message = FALSE}
+```{r q1p2, echo = FALSE, warning = FALSE, out.width="100%", fig.width=4, message = FALSE}
 ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
   geom_point(show.legend = FALSE) +
   labs(title = "Relationship between view and like count for selected content categories",
@@ -258,7 +258,7 @@ q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_c
 
 
 .pull-left[
-```{r q2p1, echo = FALSE}
+```{r q2p1, out.width="100%", fig.width=4, echo = FALSE}
 ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
     geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) +
   geom_point(color = "dodgerblue1", size = 3) +
@@ -277,9 +277,12 @@ ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
 .pull-right[
 Analysis:
 
-- hello
-- how's it going
-- who's up
+- Kia, the NFL, Pepsi, and E-Trade
+SuperBowl commercials all received a high proportion of likes
+- Budweiser, Coca-Cola, and Doritos received
+the lowest proportion of likes
+- Similarities in popularity by similar types of brands (Toyota and Hyundai; Bud Light and Budweiser)
+- What does this tell us going forward?
 
 ]
 
@@ -303,7 +306,7 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 ```
 
 .pull-left[
-```{r q2p2, echo = FALSE}
+```{r q2p2, out.width="100%", fig.width=4, echo = FALSE}
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
          geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
@@ -318,9 +321,12 @@ ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
 .pull-right[
 Analysis:
 
-- hello
-- how's it going
-- who's up
+- Not what we expected based on first graph...
+- Kia (top-rated brand in the first
+visualization) had the lowest average view and comment values
+- Does the audience’s reactions to a commercial have much of a relationship
+to the number of views and comments it receives? Probably not...
+- Interesting finding: all the car companies were in the lower left portion: why?
 
 ]
 
