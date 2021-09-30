@@ -98,23 +98,10 @@ q1_p1_data <- superbowl_data %>%
   pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
 
 
-g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
-
-animate(g, 
-        nframes = 100, # 200 frames
-        fps = 5,
-        end_pause = 15)
-
 ```
 
 
-
-#### Visualization one
-
-
-```{r, viz1 }
-
+```{r}
 q1_p2_data2 <- superbowl_data%>%
   mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
                                brand == "Kia" ~ "Car",
@@ -145,6 +132,28 @@ check_it <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
+```
+
+
+
+#### Visualization one
+
+```{r}
+
+g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+
+animate(g, 
+        nframes = 100, # 200 frames
+        fps = 5,
+        end_pause = 15)
+
+```
+
+#### Visualization two
+
+```{r, viz1 }
+
 
 ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
     geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
@@ -152,82 +161,10 @@ ggplot(check_it, aes(fill=type, y=per, x=brand_type)) +
 
 ```
 
-
-#### Visualization two
-
-
-```{r q1_p2_wrangling}
-
-q1_p2_data <- superbowl_data %>%
-  filter(show_product_quickly  == TRUE,
-         danger == TRUE,
-         celebrity == TRUE)
-
-
-q1_p2_data %>%
-  dplyr::distinct(brand)
-
-```
-
-
-
-
 [(2-3 code blocks, 2 figures, text/code comments as needed)
 In this section, provide the code that generates your plots. Use scale functions to provide nice axis labels and guides.
 You are welcome to use theme functions to customize the appearance of your plot, but you are not required to do so.
 All plots must be made with ggplot2. Do not use base R or lattice plotting functions.]
-
-
-```{r q2_p1_wrangling}
-
-q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
-  group_by(brand) %>%
-  mutate(likes_total = sum(like_count),
-         dislikes_total = sum(dislike_count),
-         proportion_likes_total = likes_total / (dislikes_total + likes_total))
-
-```
-
-```{r q2_p1_graph, echo=FALSE}
-
-ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
-    geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) +
-  geom_point(color = "dodgerblue1", size = 3) +
-  coord_cartesian(xlim = c(.75, 1)) +
-  labs(title = "Proportion of likes received out of total video interactions, by brand", x = "Proportion of likes out of total interactions",
-       y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
-    theme(panel.background = element_blank(), axis.ticks.y = element_blank(),
-          axis.text.y = element_text(size = 11, color = "black"),
-          axis.text.x = element_text(size = 11, color = "black"),
-          axis.title.x = element_text(size = 12),
-          axis.title.y = element_text(size = 12))
-```
-
-
-
-
-```{r Q2_p2_wrangling, }
-
-q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
-                         view_count != is.na(view_count)) %>%
-  group_by(brand) %>%
-  summarise(avg_total_comments = mean(comment_count),
-         avg_total_views = mean(view_count))
-
-```
-
-```{r q2_p2_graph}
-
-ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-         geom_point(aes(color = brand), show.legend = FALSE) +
-  geom_text_repel(aes(label = brand)) +
-  scale_y_log10() +
-  scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(x = "Average Total Views", y = "Average Total Comments",
-       title = "Average Total Comments vs. Average Total Views, by brand",
-       caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
-
-```
 
 ### Discussion
 
@@ -252,3 +189,113 @@ For our second graph, we created a scatterplot using `geom_point`. While we pers
 
 ### Analysis
 
+#### Wrangling
+
+```{r q2_p1_wrangling}
+
+q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
+  group_by(brand) %>%
+  mutate(likes_total = sum(like_count),
+         dislikes_total = sum(dislike_count),
+         proportion_likes_total = likes_total / (dislikes_total + likes_total))
+
+```
+
+```{r Q2_p2_wrangling, }
+
+q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
+                         view_count != is.na(view_count)) %>%
+  group_by(brand) %>%
+  summarise(avg_total_comments = mean(comment_count),
+         avg_total_views = mean(view_count))
+
+```
+
+#### Visualization one
+
+```{r q2_p1_graph, echo=FALSE}
+
+ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
+    geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) +
+  geom_point(color = "dodgerblue1", size = 3) +
+  coord_cartesian(xlim = c(.75, 1)) +
+  labs(title = "Proportion of likes received out of total video interactions, by brand", x = "Proportion of likes out of total interactions",
+       y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
+    theme(panel.background = element_blank(), axis.ticks.y = element_blank(),
+          axis.text.y = element_text(size = 11, color = "black"),
+          axis.text.x = element_text(size = 11, color = "black"),
+          axis.title.x = element_text(size = 12),
+          axis.title.y = element_text(size = 12))
+```
+
+#### Visualiztion two
+
+```{r q2_p2_graph}
+
+ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
+         geom_point(aes(color = brand), show.legend = FALSE) +
+  geom_text_repel(aes(label = brand)) +
+  scale_y_log10() +
+  scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
+  labs(x = "Average Total Views", y = "Average Total Comments",
+       title = "Average Total Comments vs. Average Total Views, by brand",
+       caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
+
+```
+
+### Discussion
+
+In graph one, it is clear that Kia, the NFL, Pepsi, and E-Trade
+SuperBowl commercials all received a high proportion of likes out of
+total reactions compared to other brands included in the dataset. In
+general, it appears that these brands are the most well received by the
+audience. On the other hand, Budweiser, Coca-Cola, and Doritos received
+the lowest proportion of likes and therefore seem to be less appealing
+to the audience. When looking at similar brands, it appears that the
+audience reacted very similarly to their commercials in some instances.
+For example, Toyota and Hyundai, both multinational car brands, received
+a very similar proportion of likes. Bud Light and Budweiser were roughly
+similar as well, though their proportions differed by a greater amount
+than Toyota and Hyundai. This trend was not true across all brands,
+however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
+us we should pay attention to Super Bowl commercials by Kia, the NFL,
+Pepsi, and E-Trade, as they have historically been reated highly.
+Graph two is a nice complement to graph one. Originally, we thought that
+the brands with the highest proportion of likes would also have many
+views, but this pattern was not true. In fact, there does not appear to
+be much of a relationship between what we found in the first graph and
+what the second graph shows us. Kia, the top-rated brand in the first
+visualization, actually had the lowest average view and comment values.
+The NFL, on the other hand, was the second highest rated in the first
+graph, but has the highest average number of comments, and the second
+highest average views on their commercials. Therefore, it appears that
+audience’s reactions to a commercial may not have much of a relationship
+to the number of views and comments it receives.
+It is difficult to extract general relationships that are not
+brand-specific from these visualizations. If we had more observations
+and more diverse brands in our dataset, it would likely help reveal
+overarching trends. However, one thing we did notice was that all the
+car companies were in the lower left portion of the second graph. One
+potential explanation of this is that cars are not a mass-consumer
+brand. Households typically only have one or two cars–if they have one
+at all. The goods in the top right of the second graph are all things
+that people consume in large quantities and on a consistent basis.
+Therefore, these items could have broader audiences and this could
+explain why these commercials receive a high number of likes and
+comments, on average.
+
+## Presentation
+
+Our presentation can be found [here](presentation/presentation.html).
+
+## Data
+
+Include a citation for your data here. See
+<http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840> for guidance
+on proper citation for datasets. If you got your data off the web, make
+sure to note the retrieval date.
+
+## References
+
+List any references here. You should, at a minimum, list your data
+source.
