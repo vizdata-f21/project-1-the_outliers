@@ -149,7 +149,7 @@ Superbowl Ads. Therefore, we do not need to merge any external data.
 youtube2 <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv")
 
 youtube2 <- youtube2 %>%
-  filter(brand == c("Kia", "NFL", "Pepsi"))%>%
+  filter(brand == c("Kia", "NFL", "Pepsi", "E-Trade"))%>%
   group_by(year, brand) %>%
   summarise(total_dislikes = sum(dislike_count), 
             total_likes = sum(like_count))
