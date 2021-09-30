@@ -140,6 +140,7 @@ either color mapping or facets.\]
 ``` r
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
+<<<<<<< HEAD
  summarise(funny = sum(funny),
             show_product_quickly = sum(show_product_quickly),
             patriotic = sum(patriotic),
@@ -148,6 +149,31 @@ q1_p1_data <- superbowl_data %>%
             animals = sum(animals),
             use_sex = sum(use_sex)) %>%
   pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+=======
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+<<<<<<< HEAD
+
+
+g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +
+  theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") +
+  transition_states(year, transition_length = 0 , state_length = 2 ) + 
+  scale_fill_brewer(palette = "Spectral") 
+
+animate(g, 
+        nframes = 100, # 200 frames
+        fps = 5,
+        end_pause = 15)
+=======
+>>>>>>> 74114db50f53d8190da0334aed23b6d7c4de2633
+>>>>>>> 1aa530281fa4193c6241a14d7787095e36439d72
 ```
 
 ``` r

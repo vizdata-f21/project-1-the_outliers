@@ -16,14 +16,26 @@ output:
 ---
 
 ```{r load-packages, include = FALSE}
-# Add any additional packages you need to this chunk
-# Remove any packages from this list that you're not using
 library(tidyverse)
 library(tidymodels)
 library(palmerpenguins)
 library(knitr)
 library(xaringan)
-#slibrary(xaringanthemer)
+library(xaringanthemer)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(fs)
+library(dsbox)
+library(ggridges)
+library(viridis)
+library(janitor)
+library(scales)
+library(gridExtra)
+library(emojifont)
+library(ggridges)
+library(gganimate)
+library(ggrepel)
 ```
 
 ```{r setup, include=FALSE}
@@ -37,166 +49,278 @@ knitr::opts_chunk$set(
   )
 ```
 
-```{r load-data, include=FALSE}
-superbowl_data <- read_csv("data/superbowldata.csv")
+
+```{r load-data, echo = FALSE, warning = FALSE, message = FALSE}
+superbowl_data <- read_csv("data/superbowldata.csv", show_col_types = FALSE)
 ```
 
 ```{r style-slides, echo = FALSE}
-style_xaringan(
-  title_slide_background_image = "img/watercolour_sys02_img34_teacup-ocean.jpg"
-)
+style_duo(primary_color = "#1F4257", secondary_color = "#F97B64",
+          title_slide_background_image = "desktop/superbowl.jpeg")
 ```
 
-class: inverse, middle, center
 
-# Using xaringan
+# Introduction: Superbowl Ads
 
----
+.pull-left[
+About This Data:
 
-## xaringan
+- Came from FiveThirtyEight
 
-- The presentation is created using the `xaringan` package
+- 233 ads from 10 brands that aired the most spots since 2000
 
-- Use `---` to separate slides and `--` for incremental builds
+- Tells us information about brands, types of videos (funny, patriotic, etc.), years released, likes/dislikes, and more.
+]
 
 --
 
-- Like this
+.pull-right[
+Why This Dataset? 
+
+- We all love Superbowl ads!
+
+- We were interested to see trends over time and explore which brands were most popular!
+
+- What makes these ads so popular?
+]
+---
+
+#Question 1: Exploring how Superbowl commerical content trends change over time...
+
 
 ---
 
-## Layouts
+## First Plot
 
-You can use plain text
+We first show the number of videos in each category over time:
 
-- or bullet points
+
+```{r q1p1wrangle, echo = FALSE}
+q1_p1_data <- superbowl_data %>%
+  group_by(year) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Food", 
+                               brand == "E-Trade" ~ "Financial", 
+                               brand == "NFL" ~ "NFL", 
+                               TRUE ~ "Miscellaneous"))
+q1_p2_data2 <- q1_p2_data2 %>%
+  group_by(brand_type) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+check_it <- q1_p2_data2 %>%
+  group_by(brand_type)%>% 
+  mutate(per=value/sum(value)) %>%
+  mutate(labels = paste(per, "%"))
+```
+
 
 .pull-left[
-or text in two columns $^*$
+
+```{r q1p1, out.width="100%", fig.width=4, echo = FALSE}
+ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
+    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
+```
+
 ]
+
 .pull-right[
-- like
-- this
+Analysis:
+
+- hello
+- how's it going
+- who's up
+
+
+]
+
+
+---
+
+## Second Plot
+
+Second, we wanted to conduct a deep dive into one content area's trends, so we created a geom_point graph that shows unique like_counts and view_counts colored by brand.
+
+```{r q1p2wrangle, echo = FALSE, warning = FALSE, message = FALSE}
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Food", 
+                               brand == "E-Trade" ~ "Financial", 
+                               brand == "NFL" ~ "NFL", 
+                               TRUE ~ "Miscellaneous"))
+q1_p2_data <- superbowl_data %>%
+  filter(show_product_quickly  == TRUE,
+         danger == TRUE,
+         celebrity == TRUE)
+q1_p2_data2 <- q1_p2_data2 %>%
+  group_by(brand_type) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+check_it <- q1_p2_data2 %>%
+  group_by(brand_type)%>% 
+  mutate(per=value/sum(value)) %>%
+  mutate(labels = paste(per, "%"))
+```
+
+
+.pull-left[
+```{r q1p2, echo = FALSE, warning = FALSE, out.width="100%", fig.width=4, message = FALSE}
+ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
+  geom_point(show.legend = FALSE) +
+  labs(title = "Relationship between view and like count for selected content categories",
+       x = "Like_Count", y = "View_Count",
+       subtitle = "Selected Content: show_product_quickly, danger, celebrity") +
+  theme_minimal() +
+  scale_y_log10() +
+  scale_x_log10() +
+  geom_text_repel(aes(label = brand), show.legend = FALSE)
+```
+
+]
+
+.pull-right[
+Analysis:
+
+- hello
+- how's it going
+- who's up
+
 ]
 
 .footnote[
-[*] And add footnotes
+any footnotes??
+
 ]
 
 ---
 
-## Code
-
-```{r boring-regression}
-# a boring regression
-model <- lm(dist ~ speed, data = cars)
-tidy(model)
-glance(model)
-```
+# Question 2: Exploring the most popular Super Bowl commercial brands...
 
 ---
 
-## Plots
+## First Plot
 
-```{r recode-species, echo = FALSE}
-# In this chunk I'm doing a bunch of analysis that I don't want to present 
-# in my slides. But I need the resulting data frame for a plot I want to present.
-penguins_modified <- penguins %>%
-  mutate(species = fct_other(species, keep = "Adelie"))
+This first graph shows the proportion of likes and dislikes for each brand:
+
+```{r q2p1wrangle, echo = FALSE}
+q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
+  group_by(brand) %>%
+  mutate(likes_total = sum(like_count),
+         dislikes_total = sum(dislike_count),
+         proportion_likes_total = likes_total / (dislikes_total + likes_total))
 ```
 
-```{r plot-penguins, echo = FALSE, warning = FALSE, fig.alt = "Body mass vs. flipper lenght of Palmer Penguins for species Adelie and all the others combined together. There is a relatively strong, positive relationship between the two variables. The Adelie penguins are clustered together but they don't exhibit a different trend than the rest of the penguins."}
-# Code hidden with echo = FALSE
-# Uses modified penguins dataset from previous chunk
-# Play around with height and width until you're happy with the look
-ggplot(penguins_modified, aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point() + 
-  theme_minimal()
-```
-
----
-
-## Plot and text
 
 .pull-left[
-- Some text
-- goes here
+```{r q2p1, out.width="100%", fig.width=4, echo = FALSE}
+ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
+    geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) +
+  geom_point(color = "dodgerblue1", size = 3) +
+  coord_cartesian(xlim = c(.75, 1)) +
+  labs(title = "Proportion of likes received out of total video interactions, by brand", x = "Proportion of likes out of total interactions",
+       y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
+    theme(panel.background = element_blank(), axis.ticks.y = element_blank(),
+          axis.text.y = element_text(size = 11, color = "black"),
+          axis.text.x = element_text(size = 11, color = "black"),
+          axis.title.x = element_text(size = 12),
+          axis.title.y = element_text(size = 12))
+```
+
 ]
+
 .pull-right[
-```{r warning=FALSE, out.width="100%", fig.width=4, echo=FALSE}
-# see how I changed out.width and fig.width from defaults
-# to make the figure bigger
-ggplot(penguins, aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot() +
-  theme_minimal()
-```
+Analysis:
+
+- Kia, the NFL, Pepsi, and E-Trade
+SuperBowl commercials all received a high proportion of likes
+- Budweiser, Coca-Cola, and Doritos received
+the lowest proportion of likes
+- Similarities in popularity by similar types of brands (Toyota and Hyundai; Bud Light and Budweiser)
+- What does this tell us going forward?
+
+]
+
+.footnote[
+any footnotes??
+
 ]
 
 ---
 
-class: inverse, middle, center
+## Second Plot
 
-# A new section...
+The second plot shows like/dislike trends by brand over time. We picked the top three brands based on the highest proportion of likes and presented them below:
 
----
-
-## Tables
-
-If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
-
-```{r penguins-table, echo = FALSE}
-kable(head(penguins), format = "html")
+```{r q2p2wrangle, echo = FALSE}
+q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
+                         view_count != is.na(view_count)) %>%
+  group_by(brand) %>%
+  summarise(avg_total_comments = mean(comment_count),
+         avg_total_views = mean(view_count))
 ```
 
----
-
-## Images
-
-```{r castle, echo = FALSE, out.width = "40%", fig.align = "center", fig.cap = "Image credit: Danielle Navarro, Percolate."}
-include_graphics("img/watercolour_sys02_img32_percolate.jpg")
+.pull-left[
+```{r q2p2, out.width="100%", fig.width=4, echo = FALSE}
+ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
+         geom_point(aes(color = brand), show.legend = FALSE) +
+  geom_text_repel(aes(label = brand)) +
+  scale_y_log10() +
+  scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
+  labs(x = "Average Total Views", y = "Average Total Comments",
+       title = "Average Total Comments vs. Average Total Views, by brand",
+       caption = "Axes on log10 scale, labels are raw units")
 ```
+]
 
-Or you can also include a full page image. See next slide.
+.pull-right[
+Analysis:
 
----
+- Not what we expected based on first graph...
+- Kia (top-rated brand in the first
+visualization) had the lowest average view and comment values
+- Does the audience’s reactions to a commercial have much of a relationship
+to the number of views and comments it receives? Probably not...
+- Interesting finding: all the car companies were in the lower left portion: why?
 
-background-image: url(img/watercolour_sys02_img32_percolate.jpg)
+]
 
----
+.footnote[
+any footnotes??
 
-## Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line, unless it is inside a pair of double dollar signs, in which case the starting `$$` must appear in the very beginning of a line, followed immediately by a non-space character, and the ending `$$` must be at the end of a line, led by a non-space character;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-1. Math does not work on the title slide (see [#61](https://github.com/yihui/xaringan/issues/61) for a workaround).
+]
 
 ---
 
-class: inverse, middle, center
-
-# Wrap up
-
----
-
-## Feeling adventurous?
-
-- Want to find out more about `xaringan`? See https://slides.yihui.name/xaringan/#1.
-
-- You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
-
-- But some of you might want to play around with slide styling. The 
-`xaringanthemer` provides some solutions for this that: https://pkg.garrickadenbuie.com/xaringanthemer.
-
-- And if you want more bells and whistles, there is also `xaringanExtra`: https://pkg.garrickadenbuie.com/xaringanExtra.
+# Questions?
