@@ -6,8 +6,8 @@ The Outliers
 
     ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
     ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
-    ## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.1     ✓ forcats 0.5.1
+    ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
+    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
 
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
@@ -171,12 +171,17 @@ patriotic themes have become less prominent over time.
 
 ### Approach
 
-\[(1-2 paragraphs) Describe what types of plots you are going to make to
-address your question. For each plot, provide a clear explanation as to
-why this plot (e.g. boxplot, barplot, histogram, etc.) is best for
-providing the information you are asking about. The two plots should be
-of different types, and at least one of the two plots needs to use
-either color mapping or facets.\]
+To address Question 1 we created two distinct plots:
+
+First, we created a a geom\_line plot with year on the x-axis and count
+on the y-axis. We colored the lines by type of video, after creating a
+count variable that corresponds to each ad category. For ads that
+feature multiple categories we count them as separate observations.
+Likewise, we omit ads that feature no categories at all. This plot is
+best for our question because it clearly displays trends over time
+faceted by category.
+
+Second, \[\]
 
 ### Analysis
 
