@@ -18,6 +18,7 @@ library(ggridges)
 library(ggrepel)
 ```
 
+
 ```{r load-data, echo = FALSE}
 superbowl_data <- read_csv("data/superbowldata.csv", show_col_types = FALSE)
 
@@ -55,6 +56,39 @@ ggplot(q1_p2_data2, aes(x = year, y = brand))+geom_density_ridges(aes(fill = bra
 Every year millions of Americans tune into the most watched  television broadcast in the United States — the Super Bowl. The Super Bowl is the NFL championship game, pitting the winners of the two major conferences, the AFC and the NFC, in a final showdown for all the glory. Due to the game’s high viewership, many brands use the occasion to advertise their products as a means to generate hype and exposure around their brands. In fact, Super Bowl commercials have been regarded as such a cultural phenomenon that many viewers only watch the games to see the beloved commercials. The invaluable exposure the Super Bowl brings to brands also comes with a hefty price as In 2021 alone the cost for a 30-second slot boasted an incredible price tag of $6 million.
 
 Using a FiveThirtyEight dataset of 233 ads from 10 brands that aired the most spots since 2000 we decided to explore the themes that make Super Bowl ads so popular. The dataset includes categorical variables used to classify each ad as `funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`, `animals` and/or `use_sex`. while also including variables that that we will use to explore popularity such as `year`, `brand`, `view_count`, `like_count`, `dislike_count`, `favorite_count`, and `comment_count`. We chose to use this dataset because we — like millions other Americans – love Super Bowl ads, and interested in viewing trends over time.
+
+The full data dictionary can be seen below:
+
+## superbowldata.csv
+
+|Variable         |Data         |Description |
+|:----------------|:-----------|:--------------------|
+|year       | double | Superbowl year| 
+|brand     | character| Brand for commercial| 
+|superbowl_ads_dot_com_url    | character | Superbowl ad URL| 
+|youtube_url             | character | Youtube URL| 
+|funny              | logical | Contains humor | 
+|show_product_quickly              | logical | Shows product quickly | 
+|patriotic             | logical | Patriotic | 
+|celebrity            |logical| Contains celebrity | 
+|danger             | logical | Contains danger | 
+|animals          | logical| Contains animals | 
+|use_sex            | logical| Uses sexuality | 
+|id             |character	| Youtube ID | 
+|kind         | character	| Youtube Kind | 
+|etag          | character	| Youtube etag | 
+|view_count           | integer | Youtube view count | 
+|like_count          | integer| Youtube like count | 
+|dislike_count          | integer| Youtube dislike count | 
+|favorite_count         | integer | Youtube favorite count | 
+|comment_count        |integer | Youtube comment count | 
+|published_at       | character | Youtube when published | 
+|title| character  | Youtube title | 
+|description | character  | Youtube description | 
+|thumbnail| character | Youtube thumbnail | 
+|channel_title       | character | Youtube channel name | 
+|category_id      | character | Youtube content category id |
+
 
 ## Exploring how Super Bowl commercial content trends change over time 
 

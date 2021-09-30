@@ -121,6 +121,38 @@ and `comment_count`. We chose to use this dataset because we — like
 millions other Americans – love Super Bowl ads, and interested in
 viewing trends over time.
 
+The full data dictionary can be seen below:
+
+## superbowldata.csv
+
+| Variable                      | Data      | Description                 |
+| :---------------------------- | :-------- | :-------------------------- |
+| year                          | double    | Superbowl year              |
+| brand                         | character | Brand for commercial        |
+| superbowl\_ads\_dot\_com\_url | character | Superbowl ad URL            |
+| youtube\_url                  | character | Youtube URL                 |
+| funny                         | logical   | Contains humor              |
+| show\_product\_quickly        | logical   | Shows product quickly       |
+| patriotic                     | logical   | Patriotic                   |
+| celebrity                     | logical   | Contains celebrity          |
+| danger                        | logical   | Contains danger             |
+| animals                       | logical   | Contains animals            |
+| use\_sex                      | logical   | Uses sexuality              |
+| id                            | character | Youtube ID                  |
+| kind                          | character | Youtube Kind                |
+| etag                          | character | Youtube etag                |
+| view\_count                   | integer   | Youtube view count          |
+| like\_count                   | integer   | Youtube like count          |
+| dislike\_count                | integer   | Youtube dislike count       |
+| favorite\_count               | integer   | Youtube favorite count      |
+| comment\_count                | integer   | Youtube comment count       |
+| published\_at                 | character | Youtube when published      |
+| title                         | character | Youtube title               |
+| description                   | character | Youtube description         |
+| thumbnail                     | character | Youtube thumbnail           |
+| channel\_title                | character | Youtube channel name        |
+| category\_id                  | character | Youtube content category id |
+
 ## Exploring how Super Bowl commercial content trends change over time
 
 ### Introduction
