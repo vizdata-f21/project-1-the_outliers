@@ -30,27 +30,6 @@ superbowl_data %>%
 
 ### brand type, ad type and views
 
-```{r, }
-
-q1_p2_data2 <- superbowl_data%>%
-  mutate(brand_type = case_when(brand == "Toyota" ~ "Car",
-                               brand == "Kia" ~ "Car",
-                               brand == "Hynudai" ~ "Car",
-                               brand == "Bud Light" ~ "Beverage",
-                               brand == "Coca-Cola" ~ "Beverage",
-                               brand == "Budweiser" ~ "Beverage",
-                               brand == "Pepsi" ~ "Beverage",
-                               brand == "Doritos" ~ "Miscellaneous",
-                               brand == "E-Trade" ~ "Miscellaneous",
-                               brand == "NFL" ~ "Miscellaneous"))
-                               
-
-ggplot(q1_p2_data2, aes(x = year, y = brand))+geom_density_ridges(aes(fill = brand_type), scale = 1) + facet_grid(~brand_type)
-## brand type, product type count
-
-
-    ###
-```
 ## Introduction
 
 Every year millions of Americans tune into the most watched  television broadcast in the United States — the Super Bowl. The Super Bowl is the NFL championship game, pitting the winners of the two major conferences, the AFC and the NFC, in a final showdown for all the glory. Due to the game’s high viewership, many brands use the occasion to advertise their products as a means to generate hype and exposure around their brands. In fact, Super Bowl commercials have been regarded as such a cultural phenomenon that many viewers only watch the games to see the beloved commercials. The invaluable exposure the Super Bowl brings to brands also comes with a hefty price as In 2021 alone the cost for a 30-second slot boasted an incredible price tag of $6 million.
@@ -120,15 +99,62 @@ q1_p1_data <- superbowl_data %>%
             use_sex_count = sum(use_sex)) %>%
   pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
 
+
+g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+
+animate(g, 
+        nframes = 100, # 200 frames
+        fps = 5,
+        end_pause = 15)
+
+```
+
+
 ```
 
 #### Visualization one
 
-```{r q1_p1_graph}
-ggplot(data = q1_p1_data, aes(x = year, y = value, color = type)) +
-  geom_line() +
-  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
+
+```{r, }
+
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Food", 
+                               brand == "E-Trade" ~ "Financial", 
+                               brand == "NFL" ~ "NFL", 
+                               TRUE ~ "Miscellaneous"))
+
+q1_p2_data2 <- q1_p2_data2 %>%
+  group_by(brand_type) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+q1_p2_data2
+
+check_it <- q1_p2_data2 %>%
+  group_by(brand_type)%>% 
+  mutate(per=value/sum(value)) %>%
+  mutate(labels = paste(per, "%"))
+
+ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
+    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
+
+
 ```
+
 
 ```{r q1_p1_graph22}
 #g <- ggplot(q1_p1_data, aes(type, value, frame= year, fill  = type)) +
