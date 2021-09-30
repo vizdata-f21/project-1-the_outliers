@@ -7,7 +7,7 @@ The Outliers
     ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
     ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
     ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
+    ## ✓ readr   2.0.1     ✓ forcats 0.5.1
 
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
@@ -64,37 +64,6 @@ The Outliers
     ## 10 E-Trade
 
 ### brand type, ad type and views
-
-``` r
-q1_p2_data2 <- superbowl_data%>%
-  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
-                               brand == "Kia" ~ "Car",
-                               brand == "Hynudai" ~ "Car",
-                               brand == "Bud Light" ~ "Beverage", 
-                               brand == "Coca-Cola" ~ "Beverage",
-                               brand == "Budweiser" ~ "Beverage", 
-                               brand == "Pepsi" ~ "Beverage", 
-                               brand == "Doritos" ~ "Miscellaneous", 
-                               brand == "E-Trade" ~ "Miscellaneous", 
-                               brand == "NFL" ~ "Miscellaneous"))
-                               
-
-ggplot(q1_p2_data2, aes(x = year, y = brand))+geom_density_ridges(aes(fill = brand_type), scale = 1) + facet_grid(~brand_type)
-```
-
-    ## Picking joint bandwidth of 2.42
-
-    ## Picking joint bandwidth of 1.9
-
-    ## Picking joint bandwidth of 2.63
-
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
-
-``` r
-## brand type, product type count 
-
-    ### 
-```
 
 ## Introduction
 
@@ -193,21 +162,83 @@ q1_p1_data <- superbowl_data %>%
             animals_count = sum(animals),
             use_sex_count = sum(use_sex)) %>%
   pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+
+g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+
+animate(g, 
+        nframes = 100, # 200 frames
+        fps = 5,
+        end_pause = 15)
 ```
+
+![](README_files/figure-gfm/q1_p1_wrangling-1.gif)<!-- -->
+
+```` 
 
 #### Visualization one
 
+
+
+```r
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Food", 
+                               brand == "E-Trade" ~ "Financial", 
+                               brand == "NFL" ~ "NFL", 
+                               TRUE ~ "Miscellaneous"))
+
+q1_p2_data2 <- q1_p2_data2 %>%
+  group_by(brand_type) %>%
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
+q1_p2_data2
+````
+
+    ## # A tibble: 35 × 3
+    ##    brand_type type                       value
+    ##    <chr>      <chr>                      <int>
+    ##  1 Beverage   funny_count                  107
+    ##  2 Beverage   show_product_quickly_count   109
+    ##  3 Beverage   patriotic_count               27
+    ##  4 Beverage   celebrity_count               44
+    ##  5 Beverage   danger_count                  46
+    ##  6 Beverage   animals_count                 63
+    ##  7 Beverage   use_sex_count                 47
+    ##  8 Car        funny_count                   26
+    ##  9 Car        show_product_quickly_count    25
+    ## 10 Car        patriotic_count                7
+    ## # … with 25 more rows
+
 ``` r
-ggplot(data = q1_p1_data, aes(x = year, y = value, color = type)) +
-  geom_line() +
-  labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
+check_it <- q1_p2_data2 %>%
+  group_by(brand_type)%>% 
+  mutate(per=value/sum(value)) %>%
+  mutate(labels = paste(per, "%"))
+
+ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
+    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
 ```
 
-![](README_files/figure-gfm/q1_p1_graph-1.png)<!-- -->
+![](README_files/figure-gfm/viz1-1.png)<!-- -->
 
 ``` r
 #g <- ggplot(q1_p1_data, aes(type, value, frame= year, fill  = type)) +
-#  geom_col() + labs(title = 'Year: {frame_time}', x = 'Type', y= "Count") + transition_time(year)+ ease_aes('linear') + coord_flip() 
+#  geom_col() + labs(title = 'Year: {frame_time}', x = 'Type', y= "Count") + transition_time(year)+ ease_aes('linear') + coord_flip()
 
 #g + transition_states(year, transition_length = 1 , state_length = 4 )
 ```
@@ -216,12 +247,12 @@ ggplot(data = q1_p1_data, aes(x = year, y = value, color = type)) +
 
 ``` r
 q1_p2_data <- superbowl_data %>%
-  filter(show_product_quickly  == TRUE, 
-         danger == TRUE, 
+  filter(show_product_quickly  == TRUE,
+         danger == TRUE,
          celebrity == TRUE)
 
 
-q1_p2_data %>% 
+q1_p2_data %>%
   dplyr::distinct(brand)
 ```
 
@@ -239,14 +270,14 @@ q1_p2_data %>%
 
 ``` r
 ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
-  geom_point(show.legend = FALSE) + 
+  geom_point(show.legend = FALSE) +
   labs(title = "Relationship between view and like count for selected content categories",
        x = "Like_Count", y = "View_Count",
-       subtitle = "Selected Content: show_product_quickly, danger, celebrity") + 
+       subtitle = "Selected Content: show_product_quickly, danger, celebrity") +
   theme_minimal() +
   scale_y_log10() +
   scale_x_log10() +
-  geom_text_repel(aes(label = brand), show.legend = FALSE) 
+  geom_text_repel(aes(label = brand), show.legend = FALSE)
 ```
 
     ## Warning: Removed 1 rows containing missing values (geom_point).
@@ -331,80 +362,14 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 ```
 
 ``` r
-ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) + 
-         geom_point(aes(color = brand), show.legend = FALSE) + 
+ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
+         geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
-  scale_y_log10() + 
+  scale_y_log10() +
   scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(x = "Average Total Views", y = "Average Total Comments", 
+  labs(x = "Average Total Views", y = "Average Total Comments",
        title = "Average Total Comments vs. Average Total Views, by brand",
-       caption = "Axes on log10 scale, labels are raw units") 
+       caption = "Axes on log10 scale, labels are raw units")
 ```
 
 ![](README_files/figure-gfm/q2_p2_graph-1.png)<!-- -->
-
-\[(2-3 code blocks, 2 figures, text/code comments as needed) In this
-section, provide the code that generates your plots. Use scale functions
-to provide nice axis labels and guides. You are welcome to use theme
-functions to customize the appearance of your plot, but you are not
-required to do so. All plots must be made with ggplot2. Do not use base
-R or lattice plotting functions.\]
-
-### Discussion
-
-In graph one, it is clear that Kia, the NFL, Pepsi, and E-Trade
-SuperBowl commercials all received a high proportion of likes out of
-total reactions compared to other brands included in the dataset. In
-general, it appears that these brands are the most well received by the
-audience. On the other hand, Budweiser, Coca-Cola, and Doritos received
-the lowest proportion of likes and therefore seem to be less appealing
-to the audience. When looking at similar brands, it appears that the
-audience reacted very similarly to their commercials in some instances.
-For example, Toyota and Hyundai, both multinational car brands, received
-a very similar proportion of likes. Bud Light and Budweiser were roughly
-similar as well, though their proportions differed by a greater amount
-than Toyota and Hyundai. This trend was not true across all brands,
-however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
-us we should pay attention to Super Bowl commercials by Kia, the NFL,
-Pepsi, and E-Trade, as they have historically been reated highly.
-
-Graph two is a nice complement to graph one. Originally, we thought that
-the brands with the highest proportion of likes would also have many
-views, but this pattern was not true. In fact, there does not appear to
-be much of a relationship between what we found in the first graph and
-what the second graph shows us. Kia, the top-rated brand in the first
-visualization, actually had the lowest average view and comment values.
-The NFL, on the other hand, was the second highest rated in the first
-graph, but has the highest average number of comments, and the second
-highest average views on their commercials. Therefore, it appears that
-audience’s reactions to a commercial may not have much of a relationship
-to the number of views and comments it receives.
-
-It is difficult to extract general relationships that are not
-brand-specific from these visualizations. If we had more observations
-and more diverse brands in our dataset, it would likely help reveal
-overarching trends. However, one thing we did notice was that all the
-car companies were in the lower left portion of the second graph. One
-potential explanation of this is that cars are not a mass-consumer
-brand. Households typically only have one or two cars–if they have one
-at all. The goods in the top right of the second graph are all things
-that people consume in large quantities and on a consistent basis.
-Therefore, these items could have broader audiences and this could
-explain why these commercials receive a high number of likes and
-comments, on average.
-
-## Presentation
-
-Our presentation can be found [here](presentation/presentation.html).
-
-## Data
-
-Include a citation for your data here. See
-<http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840> for guidance
-on proper citation for datasets. If you got your data off the web, make
-sure to note the retrieval date.
-
-## References
-
-List any references here. You should, at a minimum, list your data
-source.
