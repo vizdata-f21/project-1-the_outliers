@@ -132,14 +132,18 @@ check_it <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
+g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
 ```
 
 
 .pull-left[
 
 ```{r q1p1, out.width="100%", fig.width=4, echo = FALSE}
-ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
-    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
+animate(g, 
+        nframes = 100, # 200 frames
+        fps = 5,
+        end_pause = 15)
 ```
 
 ]
@@ -197,15 +201,8 @@ check_it <- q1_p2_data2 %>%
 
 .pull-left[
 ```{r q1p2, echo = FALSE, warning = FALSE, out.width="100%", fig.width=4, message = FALSE}
-ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
-  geom_point(show.legend = FALSE) +
-  labs(title = "Relationship between view and like count for selected content categories",
-       x = "Like_Count", y = "View_Count",
-       subtitle = "Selected Content: show_product_quickly, danger, celebrity") +
-  theme_minimal() +
-  scale_y_log10() +
-  scale_x_log10() +
-  geom_text_repel(aes(label = brand), show.legend = FALSE)
+ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
+    geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
 ```
 
 ]

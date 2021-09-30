@@ -22,6 +22,7 @@ library(ggrepel)
 
 ```{r load-data, echo = FALSE}
 superbowl_data <- read_csv("data/superbowldata.csv", show_col_types = FALSE)
+
 ```
 
 
@@ -84,26 +85,30 @@ The two plots should be of different types, and at least one of the two plots ne
 #### Wrangling data
 
 ```{r, q1_p1_wrangling}
+
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
-  summarise(funny = sum(funny),
-            show_product_quickly= sum(show_product_quickly),
-            patriotic= sum(patriotic),
-            celebrity = sum(celebrity),
-            danger = sum(danger),
-            animals = sum(animals),
-            use_sex = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
 
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") +
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") +
   transition_states(year, transition_length = 0 , state_length = 2 ) + 
   scale_fill_brewer(palette = "Spectral") 
+
 animate(g, 
         nframes = 100, # 200 frames
         fps = 5,
         end_pause = 15)
+
+
 ```
 
 
@@ -120,17 +125,20 @@ q1_p2_data2 <- superbowl_data%>%
                                brand == "E-Trade" ~ "Financial", 
                                brand == "NFL" ~ "NFL", 
                                TRUE ~ "Miscellaneous"))
+
 q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type) %>%
-  summarise(funny = sum(funny),
-            show_product_quickly= sum(show_product_quickly),
-            patriotic= sum(patriotic),
-            celebrity = sum(celebrity),
-            danger = sum(danger),
-            animals = sum(animals),
-            use_sex = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+  summarise(funny_count = sum(funny),
+            show_product_quickly_count = sum(show_product_quickly),
+            patriotic_count = sum(patriotic),
+            celebrity_count = sum(celebrity),
+            danger_count = sum(danger),
+            animals_count = sum(animals),
+            use_sex_count = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny_count, show_product_quickly_count, patriotic_count, celebrity_count, danger_count, animals_count, use_sex_count), names_to = "type")
+
 q1_p2_data2
+
 check_it <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
@@ -142,19 +150,26 @@ check_it <- q1_p2_data2 %>%
 #### Visualization one
 
 ```{r}
+
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+
 animate(g, 
         nframes = 100, # 200 frames
         fps = 5,
         end_pause = 15)
+
 ```
 
 #### Visualization two
 
 ```{r, viz1 }
+
+
 ggplot(check_it, aes(fill=type, y=per, x=brand_type)) + 
     geom_bar(position="stack", stat="identity") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad types by Brand Type", x= "Brand Type", y = "Percentage")
+
+
 ```
 
 [(2-3 code blocks, 2 figures, text/code comments as needed)
@@ -188,24 +203,29 @@ For our second graph, we created a scatterplot using `geom_point`. While we pers
 #### Wrangling
 
 ```{r q2_p1_wrangling}
+
 q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_count != is.na(dislike_count)) %>%
   group_by(brand) %>%
   mutate(likes_total = sum(like_count),
          dislikes_total = sum(dislike_count),
          proportion_likes_total = likes_total / (dislikes_total + likes_total))
+
 ```
 
 ```{r Q2_p2_wrangling, }
+
 q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
                          view_count != is.na(view_count)) %>%
   group_by(brand) %>%
   summarise(avg_total_comments = mean(comment_count),
          avg_total_views = mean(view_count))
+
 ```
 
 #### Visualization one
 
 ```{r q2_p1_graph, echo=FALSE}
+
 ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
     geom_segment(aes(y = reorder(brand, proportion_likes_total), yend = reorder(brand, proportion_likes_total), x = 0, xend = proportion_likes_total), color = "dodgerblue1", size = 2) +
   geom_point(color = "dodgerblue1", size = 3) +
@@ -222,6 +242,7 @@ ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
 #### Visualiztion two
 
 ```{r q2_p2_graph}
+
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
          geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
@@ -230,6 +251,7 @@ ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
   labs(x = "Average Total Views", y = "Average Total Comments",
        title = "Average Total Comments vs. Average Total Views, by brand",
        caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
+
 ```
 
 ### Discussion
@@ -248,7 +270,7 @@ similar as well, though their proportions differed by a greater amount
 than Toyota and Hyundai. This trend was not true across all brands,
 however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
 us we should pay attention to Super Bowl commercials by Kia, the NFL,
-Pepsi, and E-Trade, as they have historically been reated highly.
+Pepsi, and E-Trade, as they have historically been rated highly.
 Graph two is a nice complement to graph one. Originally, we thought that
 the brands with the highest proportion of likes would also have many
 views, but this pattern was not true. In fact, there does not appear to
