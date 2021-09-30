@@ -15,6 +15,7 @@ library(scales)
 library(gridExtra)
 library(emojifont)
 library(ggridges)
+library(gganimate)
 library(ggrepel)
 ```
 
@@ -86,7 +87,7 @@ The two plots should be of different types, and at least one of the two plots ne
 
 #### Wrangling data
 
-```{r q1_p1_wrangling}
+```{r, q1_p1_wrangling}
 
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
@@ -114,12 +115,11 @@ animate(g,
 ```
 
 
-```
 
 #### Visualization one
 
 
-```{r, }
+```{r, viz1 }
 
 q1_p2_data2 <- superbowl_data%>%
   mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
