@@ -260,16 +260,6 @@ ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type,
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
-``` r
-ggplot(q1_p1_data, aes(year, value, color  = type))+
-  geom_smooth(se = F, aes(fill=type), show.legend = FALSE)+ labs(title = 'Prevalence of Superbowl Ad Characteristics over Time', x = 'Year', Y=" Ad Count", fill = "Ad Characteristics") + theme_minimal() + labs(fill = "Ad Feature") + scale_fill_brewer(palette = "Spectral") + 
-  scale_y_continuous(breaks = seq(0, 12, by = 2))
-```
-
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-
-![](README_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
-
 #### Visualization two
 
 ``` r
