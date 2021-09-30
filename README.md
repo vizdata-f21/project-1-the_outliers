@@ -253,7 +253,7 @@ animate(g,
 
 ``` r
 ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Superbowl Ad Characteristics Over Time', x = 'Ad Type', y= " Ad Count", fill = "Ad Characteristic") + theme_minimal() + theme( axis.text.x=element_blank(), axis.title.x = element_blank(), legend.position = c(0.8, 0.2), legend.key.size = unit(.5, 'cm'),
+  geom_col(color = "black") + labs(title = 'Prevalence of Superbowl Ad Characteristics Over Time', x = 'Ad Type', y= " Ad Count", fill = "Ad Characteristic") + theme_minimal() + theme( axis.text.x=element_blank(), axis.title.x = element_blank(), legend.position = c(0.8, 0.2), legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
         legend.key.width = unit(.5, 'cm'), legend.background = element_rect(size = 0.5, colour = 1), axis.title.y = element_text(angle = 0, vjust = 0.5)) + scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
