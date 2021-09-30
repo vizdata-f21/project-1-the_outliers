@@ -49,6 +49,53 @@ The Outliers
 
     ## Warning: One or more parsing issues, see `problems()` for details
 
+    ## # A tibble: 10 × 1
+    ##    brand    
+    ##    <chr>    
+    ##  1 Toyota   
+    ##  2 Bud Light
+    ##  3 Hynudai  
+    ##  4 Coca-Cola
+    ##  5 Kia      
+    ##  6 Budweiser
+    ##  7 NFL      
+    ##  8 Pepsi    
+    ##  9 Doritos  
+    ## 10 E-Trade
+
+### brand type, ad type and views
+
+``` r
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Miscellaneous", 
+                               brand == "E-Trade" ~ "Miscellaneous", 
+                               brand == "NFL" ~ "Miscellaneous"))
+                               
+
+ggplot(q1_p2_data2, aes(x = year, y = brand))+geom_density_ridges(aes(fill = brand_type), scale = 1) + facet_grid(~brand_type)
+```
+
+    ## Picking joint bandwidth of 2.42
+
+    ## Picking joint bandwidth of 1.9
+
+    ## Picking joint bandwidth of 2.63
+
+![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+``` r
+## brand type, product type count 
+
+    ### 
+```
+
 ## Introduction
 
 Every year millions of Americans tune into the most watched television
@@ -73,6 +120,38 @@ variables that that we will use to explore popularity such as `year`,
 and `comment_count`. We chose to use this dataset because we — like
 millions other Americans – love Super Bowl ads, and interested in
 viewing trends over time.
+
+The full data dictionary can be seen below:
+
+## superbowldata.csv
+
+| Variable                      | Data      | Description                 |
+| :---------------------------- | :-------- | :-------------------------- |
+| year                          | double    | Superbowl year              |
+| brand                         | character | Brand for commercial        |
+| superbowl\_ads\_dot\_com\_url | character | Superbowl ad URL            |
+| youtube\_url                  | character | Youtube URL                 |
+| funny                         | logical   | Contains humor              |
+| show\_product\_quickly        | logical   | Shows product quickly       |
+| patriotic                     | logical   | Patriotic                   |
+| celebrity                     | logical   | Contains celebrity          |
+| danger                        | logical   | Contains danger             |
+| animals                       | logical   | Contains animals            |
+| use\_sex                      | logical   | Uses sexuality              |
+| id                            | character | Youtube ID                  |
+| kind                          | character | Youtube Kind                |
+| etag                          | character | Youtube etag                |
+| view\_count                   | integer   | Youtube view count          |
+| like\_count                   | integer   | Youtube like count          |
+| dislike\_count                | integer   | Youtube dislike count       |
+| favorite\_count               | integer   | Youtube favorite count      |
+| comment\_count                | integer   | Youtube comment count       |
+| published\_at                 | character | Youtube when published      |
+| title                         | character | Youtube title               |
+| description                   | character | Youtube description         |
+| thumbnail                     | character | Youtube thumbnail           |
+| channel\_title                | character | Youtube channel name        |
+| category\_id                  | character | Youtube content category id |
 
 ## Exploring how Super Bowl commercial content trends change over time
 
@@ -126,6 +205,13 @@ ggplot(data = q1_p1_data, aes(x = year, y = value, color = type)) +
 
 ![](README_files/figure-gfm/q1_p1_graph-1.png)<!-- -->
 
+``` r
+#g <- ggplot(q1_p1_data, aes(type, value, frame= year, fill  = type)) +
+#  geom_col() + labs(title = 'Year: {frame_time}', x = 'Type', y= "Count") + transition_time(year)+ ease_aes('linear') + coord_flip() 
+
+#g + transition_states(year, transition_length = 1 , state_length = 4 )
+```
+
 #### Visualization two
 
 ``` r
@@ -133,7 +219,23 @@ q1_p2_data <- superbowl_data %>%
   filter(show_product_quickly  == TRUE, 
          danger == TRUE, 
          celebrity == TRUE)
+
+
+q1_p2_data %>% 
+  dplyr::distinct(brand)
 ```
+
+    ## # A tibble: 8 × 1
+    ##   brand    
+    ##   <chr>    
+    ## 1 Bud Light
+    ## 2 Toyota   
+    ## 3 Budweiser
+    ## 4 Doritos  
+    ## 5 Coca-Cola
+    ## 6 Kia      
+    ## 7 Hynudai  
+    ## 8 Pepsi
 
 ``` r
 ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
@@ -152,14 +254,6 @@ ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
     ## Warning: Removed 1 rows containing missing values (geom_text_repel).
 
 ![](README_files/figure-gfm/q1_p2_graph-1.png)<!-- -->
-
-# year on x. view count on y. color by content type
-
-# 100% stacked bar by view count. year and content type.
-
-# facet by content type. Do year vs. view count line
-
-# categorize brands a
 
 \[(2-3 code blocks, 2 figures, text/code comments as needed) In this
 section, provide the code that generates your plots. Use scale functions

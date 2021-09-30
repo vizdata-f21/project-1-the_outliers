@@ -111,7 +111,7 @@ q1_p1_data <- superbowl_data %>%
 ```{r}
 random_data <- filter(superbowl_data, view_count != is.na(view_count)) %>%
   pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type") %>%
-  group_by(year, type) %>%
+  group_by(type) %>%
   summarise(total_views = sum(view_count))
 
 

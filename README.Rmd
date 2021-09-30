@@ -18,15 +18,77 @@ library(ggridges)
 library(ggrepel)
 ```
 
+
 ```{r load-data, echo = FALSE}
 superbowl_data <- read_csv("data/superbowldata.csv", show_col_types = FALSE)
+
+
+superbowl_data %>%
+  dplyr::distinct(brand)
 ```
 
+
+### brand type, ad type and views 
+
+```{r, }
+
+q1_p2_data2 <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+                               brand == "Kia" ~ "Car",
+                               brand == "Hynudai" ~ "Car",
+                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Coca-Cola" ~ "Beverage",
+                               brand == "Budweiser" ~ "Beverage", 
+                               brand == "Pepsi" ~ "Beverage", 
+                               brand == "Doritos" ~ "Miscellaneous", 
+                               brand == "E-Trade" ~ "Miscellaneous", 
+                               brand == "NFL" ~ "Miscellaneous"))
+                               
+
+ggplot(q1_p2_data2, aes(x = year, y = brand))+geom_density_ridges(aes(fill = brand_type), scale = 1) + facet_grid(~brand_type)
+## brand type, product type count 
+
+
+    ### 
+```
 ## Introduction
 
 Every year millions of Americans tune into the most watched  television broadcast in the United States — the Super Bowl. The Super Bowl is the NFL championship game, pitting the winners of the two major conferences, the AFC and the NFC, in a final showdown for all the glory. Due to the game’s high viewership, many brands use the occasion to advertise their products as a means to generate hype and exposure around their brands. In fact, Super Bowl commercials have been regarded as such a cultural phenomenon that many viewers only watch the games to see the beloved commercials. The invaluable exposure the Super Bowl brings to brands also comes with a hefty price as In 2021 alone the cost for a 30-second slot boasted an incredible price tag of $6 million.
 
 Using a FiveThirtyEight dataset of 233 ads from 10 brands that aired the most spots since 2000 we decided to explore the themes that make Super Bowl ads so popular. The dataset includes categorical variables used to classify each ad as `funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`, `animals` and/or `use_sex`. while also including variables that that we will use to explore popularity such as `year`, `brand`, `view_count`, `like_count`, `dislike_count`, `favorite_count`, and `comment_count`. We chose to use this dataset because we — like millions other Americans – love Super Bowl ads, and interested in viewing trends over time.
+
+The full data dictionary can be seen below:
+
+## superbowldata.csv
+
+|Variable         |Data         |Description |
+|:----------------|:-----------|:--------------------|
+|year       | double | Superbowl year| 
+|brand     | character| Brand for commercial| 
+|superbowl_ads_dot_com_url    | character | Superbowl ad URL| 
+|youtube_url             | character | Youtube URL| 
+|funny              | logical | Contains humor | 
+|show_product_quickly              | logical | Shows product quickly | 
+|patriotic             | logical | Patriotic | 
+|celebrity            |logical| Contains celebrity | 
+|danger             | logical | Contains danger | 
+|animals          | logical| Contains animals | 
+|use_sex            | logical| Uses sexuality | 
+|id             |character	| Youtube ID | 
+|kind         | character	| Youtube Kind | 
+|etag          | character	| Youtube etag | 
+|view_count           | integer | Youtube view count | 
+|like_count          | integer| Youtube like count | 
+|dislike_count          | integer| Youtube dislike count | 
+|favorite_count         | integer | Youtube favorite count | 
+|comment_count        |integer | Youtube comment count | 
+|published_at       | character | Youtube when published | 
+|title| character  | Youtube title | 
+|description | character  | Youtube description | 
+|thumbnail| character | Youtube thumbnail | 
+|channel_title       | character | Youtube channel name | 
+|category_id      | character | Youtube content category id |
+
 
 ## Exploring how Super Bowl commercial content trends change over time 
 
@@ -68,6 +130,14 @@ ggplot(data = q1_p1_data, aes(x = year, y = value, color = type)) +
   labs(title = "Prevelance of Different Types of Ads Over Time", x = "Year", y = "Count")
 ```
 
+```{r q1_p1_graph22}
+#g <- ggplot(q1_p1_data, aes(type, value, frame= year, fill  = type)) +
+#  geom_col() + labs(title = 'Year: {frame_time}', x = 'Type', y= "Count") + transition_time(year)+ ease_aes('linear') + coord_flip() 
+
+#g + transition_states(year, transition_length = 1 , state_length = 4 )
+
+```
+
 #### Visualization two 
 
 
@@ -77,6 +147,10 @@ q1_p2_data <- superbowl_data %>%
   filter(show_product_quickly  == TRUE, 
          danger == TRUE, 
          celebrity == TRUE)
+
+
+q1_p2_data %>% 
+  dplyr::distinct(brand)
 
 ```
 
@@ -94,11 +168,6 @@ ggplot(data = q1_p2_data, aes(x = like_count, y = view_count, color = brand)) +
   geom_text_repel(aes(label = brand), show.legend = FALSE) 
 
 ```
-
-# year on x. view count on y. color by content type
-# 100% stacked bar by view count. year and content type.
-# facet by content type. Do year vs. view count line 
-# categorize brands a
 
 
 
