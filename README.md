@@ -178,11 +178,11 @@ categories.
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
   summarise(funny = sum(funny),
-            show_product_quickly= sum(show_product_quickly),
-            patriotic= sum(patriotic),
+            show_product_quickly = sum(show_product_quickly),
+            patriotic = sum(patriotic),
             celebrity = sum(celebrity),
-            danger = sum(danger),
-            animals = sum(animals),
+            danger= sum(danger),
+            animals= sum(animals),
             use_sex = sum(use_sex)) %>%
   pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
 ```
@@ -200,16 +200,18 @@ q1_p2_data2 <- superbowl_data%>%
                                brand == "E-Trade" ~ "Misc.", 
                                brand == "NFL" ~ "NFL", 
                                TRUE ~ "Miscellaneous"))
+
 q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type) %>%
   summarise(funny = sum(funny),
-            show_product_quickly= sum(show_product_quickly),
-            patriotic= sum(patriotic),
+            show_product_quickly = sum(show_product_quickly),
+            patriotic = sum(patriotic),
             celebrity = sum(celebrity),
-            danger = sum(danger),
-            animals = sum(animals),
+            danger= sum(danger),
+            animals= sum(animals),
             use_sex = sum(use_sex)) %>%
   pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+
 q1_p2_data2
 ```
 
@@ -240,6 +242,7 @@ q1_p2_data2 <- q1_p2_data2 %>%
 ``` r
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+
 animate(g, 
         nframes = 100, # 200 frames
         fps = 5,
@@ -250,7 +253,7 @@ animate(g,
 
 ``` r
 ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Superbowl Ad Characteristics Over Time', x = 'Ad Type', y= " Ad Count", fill = "Ad Charrcteristic") + theme_minimal() + theme( axis.text.x=element_blank(), axis.title.x = element_blank(), legend.position = c(0.8, 0.2), legend.key.size = unit(.5, 'cm'),
+  geom_col() + labs(title = 'Prevalence of Superbowl Ad Characteristics Over Time', x = 'Ad Type', y= " Ad Count", fill = "Ad Characteristic") + theme_minimal() + theme( axis.text.x=element_blank(), axis.title.x = element_blank(), legend.position = c(0.8, 0.2), legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
         legend.key.width = unit(.5, 'cm'), legend.background = element_rect(size = 0.5, colour = 1), axis.title.y = element_text(angle = 0, vjust = 0.5)) + scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
@@ -275,8 +278,13 @@ ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) +
              color = "black") + coord_flip() + 
   scale_fill_brewer(palette = "Spectral") + theme_minimal()+ 
   labs(title = "Prevalence of Ad Characteristics by Brand Type", x= "Brand Type",
-       y = "Percentage", fill = "Ad Features")
+       y = "Percentage", fill = "Ad Features") + geom_bar(position="stack", stat="identity", color = "black") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad Features by Brand Category", x= "Brand Type", y = "Percentage", fill = "Ad Features")
 ```
+
+    ## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
+
+    ## Scale for 'fill' is already present. Adding another scale for 'fill', which
+    ## will replace the existing scale.
 
 ![](README_files/figure-gfm/viz1-1.png)<!-- -->
 
@@ -383,7 +391,7 @@ similar as well, though their proportions differed by a greater amount
 than Toyota and Hyundai. This trend was not true across all brands,
 however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
 us we should pay attention to Super Bowl commercials by Kia, the NFL,
-Pepsi, and E-Trade, as they have historically been reated highly. Graph
+Pepsi, and E-Trade, as they have historically been rated highly. Graph
 two is a nice complement to graph one. Originally, we thought that the
 brands with the highest proportion of likes would also have many views,
 but this pattern was not true. In fact, there does not appear to be much
