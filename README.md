@@ -122,7 +122,9 @@ a “yes” inputted for that brands’s commercial. Furthermore, a commercial
 can feature multiple characteristics such as being funny while using
 patriotism to raise awareness for said product. We are interested in
 seeing the changes in commercial advertising over time and predict that
-patriotic themes have become less prominent over time.
+patriotic themes have become less prominent over time. Further, we hoped
+to identify which characteristics of advertisements were popular among
+certain brand categories.
 
 ### Approach
 
@@ -132,12 +134,6 @@ why this plot (e.g. boxplot, barplot, histogram, etc.) is best for
 providing the information you are asking about.The two plots should be
 of different types, and at least one of the two plots needs to use
 either color mapping or facets.\]
-
-Our first question was how content trends change over time. We asked
-this question in an attempt to understand how companies have changed
-their approach to advertising. Further, we hoped to identify which
-characteristics of advertisements were popular amongst certain brand
-categories.
 
 Graph 1: Our first graph sought to explore the prevalence of ad
 characteristics over time. Originally, we hoped to show this data in a
@@ -183,8 +179,8 @@ q1_p1_data <- superbowl_data %>%
             celebrity = sum(celebrity),
             danger= sum(danger),
             animals= sum(animals),
-            use_sex = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+            sexuality = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, sexuality), names_to = "type")
 ```
 
 ``` r
@@ -209,28 +205,11 @@ q1_p2_data2 <- q1_p2_data2 %>%
             celebrity = sum(celebrity),
             danger= sum(danger),
             animals= sum(animals),
-            use_sex = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, use_sex), names_to = "type")
+            sexuality = sum(use_sex)) %>%
+  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, 
+                        danger, animals, sexuality), names_to = "type")
 
-q1_p2_data2
-```
 
-    ## # A tibble: 28 × 3
-    ##    brand_type type                 value
-    ##    <chr>      <chr>                <int>
-    ##  1 Beverage   funny                  107
-    ##  2 Beverage   show_product_quickly   109
-    ##  3 Beverage   patriotic               27
-    ##  4 Beverage   celebrity               44
-    ##  5 Beverage   danger                  46
-    ##  6 Beverage   animals                 63
-    ##  7 Beverage   use_sex                 47
-    ##  8 Car        funny                   26
-    ##  9 Car        show_product_quickly    25
-    ## 10 Car        patriotic                7
-    ## # … with 18 more rows
-
-``` r
 q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
@@ -241,7 +220,14 @@ q1_p2_data2 <- q1_p2_data2 %>%
 
 ``` r
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}', x = 'Ad Type', y= " Ad Count") + theme_minimal() + theme(axis.text.x=element_text(color = "black", size=10, angle=30, vjust=.8, hjust=0.8), legend.position = "none") + transition_states(year, transition_length = 0 , state_length = 2 )+ scale_fill_brewer(palette = "Spectral") 
+  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}',
+                    x = 'Ad Type', y= " Ad Count") + theme_minimal() + 
+  theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
+                                 vjust=.8, hjust=0.8), 
+        legend.position = "none") + transition_states(year, 
+                                                      transition_length = 0 ,
+                                                      state_length = 2 )+
+  scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
         nframes = 100, # 200 frames
@@ -249,16 +235,27 @@ animate(g,
         end_pause = 15)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.gif)<!-- -->
+<img src="README_files/figure-gfm/animated_viz_1-1.gif" style="display: block; margin: auto;" />
 
 ``` r
-ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type, value, fill  = type)) +
-  geom_col(color = "black") + labs(title = 'Prevalence of Superbowl Ad Characteristics Over Time', x = 'Ad Type', y= " Ad Count", fill = "Ad Characteristic") + theme_minimal() + theme( axis.text.x=element_blank(), axis.title.x = element_blank(), legend.position = c(0.8, 0.2), legend.key.size = unit(.5, 'cm'),
+ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)),
+       aes(type, value, fill  = type)) +
+  geom_col(color = "black") + labs(title = 'Prevalence of Superbowl Ad
+                                   Characteristics Over Time', x = 'Ad Type',
+                                   y= " Ad Count", fill = "Ad Characteristic")+ 
+  theme_minimal() + theme( axis.text.x=element_blank(), 
+                           axis.title.x = element_blank(), 
+                           legend.position = c(0.8, 0.2), 
+                           legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
-        legend.key.width = unit(.5, 'cm'), legend.background = element_rect(size = 0.5, colour = 1), axis.title.y = element_text(angle = 0, vjust = 0.5)) + scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + scale_y_continuous(breaks = seq(0, 12, by = 2))
+        legend.key.width = unit(.5, 'cm'), 
+        legend.background = element_rect(size = 0.5, colour = 1), 
+        axis.title.y = element_text(angle = 0, vjust = 0.5)) + 
+  scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + 
+  scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+<img src="README_files/figure-gfm/faceted_viz_1-1.png" style="display: block; margin: auto;" />
 
 #### Visualization two
 
@@ -266,9 +263,13 @@ ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type,
 ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) + 
     geom_bar(position="stack", stat="identity", 
              color = "black") + coord_flip() + 
-  scale_fill_brewer(palette = "Spectral") + theme_minimal()+ 
-  labs(title = "Prevalence of Ad Characteristics by Brand Type", x= "Brand Type",
-       y = "Percentage", fill = "Ad Features") + geom_bar(position="stack", stat="identity", color = "black") + coord_flip() + scale_fill_brewer(palette = "Spectral") + theme_minimal()+ labs(title = "Prevalence of Ad Features by Brand Category", x= "Brand Type", y = "Percentage", fill = "Ad Features")
+  scale_fill_brewer(palette = "Spectral") + theme_minimal()+
+  labs(title = "Prevalence of Ad Characteristics by Brand Type", 
+       x= "Brand Type",
+       y = "Percentage", 
+       fill = "Ad Features") + scale_y_continuous(labels = percent) +
+  geom_bar(position="stack", stat="identity", color = "black") +
+  coord_flip() + scale_fill_brewer(palette = "Spectral")
 ```
 
     ## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
@@ -276,19 +277,43 @@ ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) +
     ## Scale for 'fill' is already present. Adding another scale for 'fill', which
     ## will replace the existing scale.
 
-![](README_files/figure-gfm/viz1-1.png)<!-- -->
+<img src="README_files/figure-gfm/stacked_bar_viz_2-1.png" style="display: block; margin: auto;" />
 
 ### Discussion
 
-\[(1-3 paragraphs) In the Discussion section, interpret the results of
-your analysis. Identify any trends revealed (or not revealed) by the
-plots. Speculate about why the data looks the way it does.\]
+From our first plot above we can see that there have been considerable
+changes to the content featured in Super Bowl ads. Primarily we can see
+that the use of sex has gone down considerably, especially since 2015.
+We believe this could be attributed to social movements such as the Me
+Too movement which has put considerable pressure on how sexuality and
+gender roles are portrayed in the media.
+
+We can also see however, that there are ad categories that have
+consistently featured — or not featured — among the top brands. For
+example, in over 67% of years covered in our dataset, brands
+consistently relied on being funny and showing the product quickly to
+advertise their products. Intuitively this makes sense. Humor is a
+universal method to draw attention and showing the product you are
+advertising is critical in order to develop a relationship with the
+consumer . Alternatively, in over 70% of years covered in our dataset,
+patriotism was the last marketing resort used by brands to advertise
+their products. We were surprised to see this as our initial hypothesis
+was it would among the most featured categories; the Super Bowl prides
+itself as America’s most watched broadcast which emanates underlying
+patriotic ties.
+
+Our second plot shows the breakdown of ad features by brand type. We can
+see that NFL owned ads feature celebrities at a much higher rate
+compared to other brand types. We believe this is true because NFL ads
+heavily feature prominent football players such as Tom Brady and Aaron
+Rodgers. The other 3 brand types have similar breakdowns of ad features
+with features funny and shows product quickly being the most prevalent.
+This validates the results from our previous plots as those features
+have consistently featured among top brands in our dataset.
 
 ## Exploring the most popular Super Bowl commercial brands
 
 ### Introduction
-
-\[Hebron’s work here\]
 
 ### Approach
 
@@ -348,7 +373,7 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 #### Visualization one
 
-![](README_files/figure-gfm/q2_p1_graph-1.png)<!-- -->
+<img src="README_files/figure-gfm/q2_p1_graph-1.png" style="display: block; margin: auto;" />
 
 #### Visualiztion two
 
@@ -363,7 +388,7 @@ ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
        caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
 ```
 
-![](README_files/figure-gfm/q2_p2_graph-1.png)<!-- -->
+<img src="README_files/figure-gfm/q2_p2_graph-1.png" style="display: block; margin: auto;" />
 
 ### Discussion
 
