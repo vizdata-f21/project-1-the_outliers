@@ -188,7 +188,7 @@ g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
-        nframes = 100, # 200 frames
+        nframes = 100,
         fps = 5,
         end_pause = 15)
 
