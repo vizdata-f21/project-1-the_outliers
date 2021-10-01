@@ -86,9 +86,9 @@ include_graphics("img/football.png")
 ```
 ---
 
-#Question 1: Exploring how Superbowl commerical content trends change over time...
+# Question 1: Exploring how Superbowl commerical content trends change over time...
 
-```{r overtimegraphic, echo = FALSE, out.width = "40%", fig.align = "bottom"}
+```{r overtimegraphic, echo = FALSE, out.width = "40%", fig.align = "middle"}
 include_graphics("img/overtime.jpeg")
 ```
 
@@ -124,9 +124,11 @@ ggplot(q1_p1_data %>% filter(year %in% c(2000, 2005, 2010,2015, 2020)), aes(type
 .pull-right[
 Analysis:
 
-- hello
-- how's it going
-- who's up
+- considerable changes over time in
+the content of Super Bowl ads
+- use of sex has dropped since 2015: why?
+- funny and showing the product quickly consistently high: why?
+- surprising finding: patriotism very low majority of years
 
 
 ]
@@ -184,9 +186,9 @@ ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) +
 .pull-right[
 Analysis:
 
-- hello
-- how's it going
-- who's up
+- NFL owned ads feature celebrities at a much higher rate compared to other
+brand types: why?
+- Consistent with last plot: other brand types have features funny and shows product quickly as most prevalent
 
 ]
 
