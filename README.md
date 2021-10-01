@@ -7,7 +7,7 @@ The Outliers
     ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
     ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
     ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.1     ✓ forcats 0.5.1
+    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
 
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## x dplyr::filter() masks stats::filter()
@@ -127,13 +127,6 @@ to identify which characteristics of advertisements were popular among
 certain brand categories.
 
 ### Approach
-
-\[(1-2 paragraphs) Describe what types of plots you are going to make to
-address your question. For each plot, provide a clear explanation as to
-why this plot (e.g. boxplot, barplot, histogram, etc.) is best for
-providing the information you are asking about.The two plots should be
-of different types, and at least one of the two plots needs to use
-either color mapping or facets.\]
 
 Graph 1: Our first graph sought to explore the prevalence of ad
 characteristics over time. Originally, we hoped to show this data in a
