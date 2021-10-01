@@ -215,12 +215,14 @@ q1_p2_data2 <- q1_p2_data2 %>%
 ``` r
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
-                    x = 'Ad Type', y= " Ad Count") + theme_minimal() + 
+                    x = 'Ad Type', y= " Ad Count") + 
+  theme_minimal() + 
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
                                  vjust=.8, hjust=0.8), 
-        legend.position = "none") + transition_states(year, 
-                                                      transition_length = 0 ,
-                                                      state_length = 2 )+
+        legend.position = "none") + 
+  transition_states(year, 
+                    transition_length = 0,
+                    state_length = 2 ) +
   scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
@@ -232,19 +234,23 @@ animate(g,
 <img src="README_files/figure-gfm/animated_viz_1-1.gif" style="display: block; margin: auto;" />
 
 ``` r
-ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)),
+ggplot(q1_p1_data %>% 
+         filter(year %in% c(2000, 2005, 2010,2015, 2020)),
        aes(type, value, fill  = type)) +
-  geom_col(color = "black") + labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
-                                   y= " Ad Count", fill = "Ad Characteristic")+ 
-  theme_minimal() + theme(axis.text.x=element_blank(), 
-                           axis.title.x = element_blank(), 
-                           legend.position = c(0.85, 0.25), 
-                           legend.key.size = unit(.5, 'cm'),
+  geom_col(color = "black") + 
+  labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
+       y= " Ad Count", fill = "Ad Characteristic") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank(), 
+        legend.position = c(0.85, 0.25),
+        legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
         legend.key.width = unit(.5, 'cm'), 
         legend.background = element_rect(size = 0.5, colour = 1), 
         axis.title.y = element_text(angle = 90, vjust = 0.5)) + 
-  scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + 
+  scale_fill_brewer(palette = "Spectral") + 
+  facet_wrap(~year, ncol = 3) + 
   scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
 
@@ -253,15 +259,17 @@ ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)),
 #### Visualization two
 
 ``` r
-ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) + 
-    geom_bar(position="stack", stat="identity", 
+ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
+    geom_bar(position = "stack", stat = "identity", 
              color = "black") + coord_flip() + 
-  scale_fill_brewer(palette = "Spectral") + theme_minimal()+
+  scale_fill_brewer(palette = "Spectral") + 
+  theme_minimal() +
   labs(title = "Popularity of Ad Characteristics by Brand Type", 
        x= "Brand Type",
        y = "Percentage", 
-       fill = "Ad Features") + scale_y_continuous(labels = percent) +
-  geom_bar(position="stack", stat="identity", color = "black") +
+       fill = "Ad Features") + 
+  scale_y_continuous(labels = percent) +
+  geom_bar(position = "stack", stat = "identity", color = "black") +
   coord_flip()
 ```
 
@@ -358,7 +366,7 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
                          view_count != is.na(view_count)) %>%
   group_by(brand) %>%
   summarise(avg_total_comments = mean(comment_count),
-         avg_total_views = mean(view_count))
+            avg_total_views = mean(view_count))
 ```
 
 #### Visualization one
@@ -369,14 +377,15 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 ``` r
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-         geom_point(aes(color = brand), show.legend = FALSE) +
+  geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
   scale_fill_brewer(palette = "Spectral") + 
   scale_y_log10() +
   scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(x = "Average Total Views", y = "Average Total Comments",
-       title = "Average Total Comments vs. Average Total Views, by brand",
-       caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
+  labs(title = "Average Total Comments vs. Average Total Views, by brand",
+       x = "Average Total Views", y = "Average Total Comments",
+       caption = "Axes on log10 scale, labels are raw units") + 
+  theme_minimal()
 ```
 
 <img src="README_files/figure-gfm/q2_p2_graph-1.png" style="display: block; margin: auto;" />
@@ -397,33 +406,37 @@ similar as well, though their proportions differed by a greater amount
 than Toyota and Hyundai. This trend was not true across all brands,
 however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
 us we should pay attention to Super Bowl commercials by Kia, the NFL,
-Pepsi, and E-Trade, as they have historically been rated highly. Graph
-two is a nice complement to graph one. Originally, we thought that the
-brands with the highest proportion of likes would also have many views,
-but this pattern was not true. In fact, there does not appear to be much
-of a relationship between what we found in the first graph and what the
-second graph shows us. Kia, the top-rated brand in the first
+Pepsi, and E-Trade, as they have historically been rated highly.
+
+Graph two is a nice complement to graph one. Originally, we thought that
+the brands with the highest proportion of likes would also have many
+views, but this pattern was not true. In fact, there does not appear to
+be much of a relationship between what we found in the first graph and
+what the second graph shows us. Kia, the top-rated brand in the first
 visualization, actually had the lowest average view and comment values.
 The NFL, on the other hand, was the second highest rated in the first
 graph, but has the highest average number of comments, and the second
 highest average views on their commercials. Therefore, it appears that
 audience’s reactions to a commercial may not have much of a relationship
-to the number of views and comments it receives. It is difficult to
-extract general relationships that are not brand-specific from these
-visualizations. If we had more observations and more diverse brands in
-our dataset, it would likely help reveal overarching trends. However,
-one thing we did notice was that all the car companies were in the lower
-left portion of the second graph. One potential explanation of this is
-that cars are not a mass-consumer brand. Households typically only have
-one or two cars–if they have one at all. The goods in the top right of
-the second graph are all things that people consume in large quantities
-and on a consistent basis. Therefore, these items could have broader
-audiences and this could explain why these commercials receive a high
-number of likes and comments, on average.
+to the number of views and comments it receives.
+
+It is difficult to extract general relationships that are not
+brand-specific from these visualizations. If we had more observations
+and more diverse brands in our dataset, it would likely help reveal
+overarching trends. However, one thing we did notice was that all the
+car companies were in the lower left portion of the second graph. One
+potential explanation of this is that cars are not a mass-consumer
+brand. Households typically only have one or two cars–if they have one
+at all. The goods in the top right of the second graph are all things
+that people consume in large quantities and on a consistent basis.
+Therefore, these items could have broader audiences and this could
+explain why these commercials receive a high number of likes and
+comments, on average.
 
 ## Presentation
 
-Our presentation can be found [here](presentation/presentation.html).
+Our presentation can be found
+[here](https://drive.google.com/file/d/1JbjsaGsJfFPCeid9FGwANgR0nu7FZ_Wz/view?usp=sharing).
 
 ## Data
 

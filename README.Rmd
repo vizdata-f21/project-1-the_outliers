@@ -118,7 +118,6 @@ This plot clearly identified which characteristics of advertisements were
 popular amongst certain brand categories.
 
 
-
 ### Analysis
 
 #### Wrangling data
@@ -139,7 +138,8 @@ q1_p1_data <- superbowl_data %>%
 
 ```
 
-```{r}
+```{r q1-p2-data-wrangling}
+
 q1_p2_data2 <- superbowl_data%>%
   mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
                                brand == "Kia" ~ "Car",
@@ -170,22 +170,25 @@ q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
+
 ```
 
 
 
 #### Visualization one
 
-```{r, animated_viz_1, fig.align='center'}
+```{r, animated_viz_1, fig.align = 'center'}
 
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
   geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
-                    x = 'Ad Type', y= " Ad Count") + theme_minimal() + 
+                    x = 'Ad Type', y= " Ad Count") + 
+  theme_minimal() + 
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
                                  vjust=.8, hjust=0.8), 
-        legend.position = "none") + transition_states(year, 
-                                                      transition_length = 0 ,
-                                                      state_length = 2 )+
+        legend.position = "none") + 
+  transition_states(year, 
+                    transition_length = 0,
+                    state_length = 2 ) +
   scale_fill_brewer(palette = "Spectral") 
 
 animate(g, 
@@ -196,37 +199,44 @@ animate(g,
 ```
 
 
-```{r, faceted_viz_1, fig.align='center'}
-ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)),
+```{r, faceted_viz_1, fig.align = 'center'}
+
+ggplot(q1_p1_data %>% 
+         filter(year %in% c(2000, 2005, 2010,2015, 2020)),
        aes(type, value, fill  = type)) +
-  geom_col(color = "black") + labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
-                                   y= " Ad Count", fill = "Ad Characteristic")+ 
-  theme_minimal() + theme(axis.text.x=element_blank(), 
-                           axis.title.x = element_blank(), 
-                           legend.position = c(0.85, 0.25), 
-                           legend.key.size = unit(.5, 'cm'),
+  geom_col(color = "black") + 
+  labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
+       y= " Ad Count", fill = "Ad Characteristic") + 
+  theme_minimal() + 
+  theme(axis.text.x = element_blank(), 
+        axis.title.x = element_blank(), 
+        legend.position = c(0.85, 0.25),
+        legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
         legend.key.width = unit(.5, 'cm'), 
         legend.background = element_rect(size = 0.5, colour = 1), 
         axis.title.y = element_text(angle = 90, vjust = 0.5)) + 
-  scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + 
+  scale_fill_brewer(palette = "Spectral") + 
+  facet_wrap(~year, ncol = 3) + 
   scale_y_continuous(breaks = seq(0, 12, by = 2))
 
 ```
 
 #### Visualization two
 
-```{r, stacked_bar_viz_2, fig.align='center'}
+```{r, stacked_bar_viz_2, fig.align = 'center'}
 
-ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) + 
-    geom_bar(position="stack", stat="identity", 
+ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
+    geom_bar(position = "stack", stat = "identity", 
              color = "black") + coord_flip() + 
-  scale_fill_brewer(palette = "Spectral") + theme_minimal()+
+  scale_fill_brewer(palette = "Spectral") + 
+  theme_minimal() +
   labs(title = "Popularity of Ad Characteristics by Brand Type", 
        x= "Brand Type",
        y = "Percentage", 
-       fill = "Ad Features") + scale_y_continuous(labels = percent) +
-  geom_bar(position="stack", stat="identity", color = "black") +
+       fill = "Ad Features") + 
+  scale_y_continuous(labels = percent) +
+  geom_bar(position = "stack", stat = "identity", color = "black") +
   coord_flip()
 
 ```
@@ -290,19 +300,19 @@ q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_c
 
 ```
 
-```{r Q2_p2_wrangling}
+```{r q2_p2_wrangling}
 
 q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
                          view_count != is.na(view_count)) %>%
   group_by(brand) %>%
   summarise(avg_total_comments = mean(comment_count),
-         avg_total_views = mean(view_count))
+            avg_total_views = mean(view_count))
 
 ```
 
 #### Visualization one
 
-```{r q2_p1_graph, fig.align='center', echo=FALSE}
+```{r q2_p1_graph, fig.align = 'center', echo = FALSE}
 
 ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
     geom_segment(aes(y = reorder(brand, proportion_likes_total), 
@@ -315,26 +325,28 @@ ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
        by brand", x = "Proportion of likes out of total interactions",
        y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
   theme_minimal() + 
-    theme(axis.ticks.y = element_blank(),
-          axis.text.y = element_text(size = 11, color = "black"),
-          axis.text.x = element_text(size = 11, color = "black"),
-          axis.title.x = element_text(size = 12),
-          axis.title.y = element_text(size = 12))
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = 11, color = "black"),
+        axis.text.x = element_text(size = 11, color = "black"),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12))
+
 ```
 
 #### Visualiztion two
 
-```{r q2_p2_graph, fig.align='center'}
+```{r q2_p2_graph, fig.align = 'center'}
 
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-         geom_point(aes(color = brand), show.legend = FALSE) +
+  geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
   scale_fill_brewer(palette = "Spectral") + 
   scale_y_log10() +
   scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(x = "Average Total Views", y = "Average Total Comments",
-       title = "Average Total Comments vs. Average Total Views, by brand",
-       caption = "Axes on log10 scale, labels are raw units") + theme_minimal()
+  labs(title = "Average Total Comments vs. Average Total Views, by brand",
+       x = "Average Total Views", y = "Average Total Comments",
+       caption = "Axes on log10 scale, labels are raw units") + 
+  theme_minimal()
 
 ```
 
@@ -355,6 +367,7 @@ than Toyota and Hyundai. This trend was not true across all brands,
 however (i.e. Coca-Cola and Pepsi). Going forward, this analysis tells
 us we should pay attention to Super Bowl commercials by Kia, the NFL,
 Pepsi, and E-Trade, as they have historically been rated highly.
+
 Graph two is a nice complement to graph one. Originally, we thought that
 the brands with the highest proportion of likes would also have many
 views, but this pattern was not true. In fact, there does not appear to
@@ -366,6 +379,7 @@ graph, but has the highest average number of comments, and the second
 highest average views on their commercials. Therefore, it appears that
 audience’s reactions to a commercial may not have much of a relationship
 to the number of views and comments it receives.
+
 It is difficult to extract general relationships that are not
 brand-specific from these visualizations. If we had more observations
 and more diverse brands in our dataset, it would likely help reveal
@@ -381,7 +395,7 @@ comments, on average.
 
 ## Presentation
 
-Our presentation can be found [here](presentation/presentation.html).
+Our presentation can be found [here](https://drive.google.com/file/d/1JbjsaGsJfFPCeid9FGwANgR0nu7FZ_Wz/view?usp=sharing).
 
 ## Data
 
