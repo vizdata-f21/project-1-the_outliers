@@ -4,7 +4,7 @@ author: The Outliers
 output: github_document
 ---
 
-```{r load-packages, echo = FALSE}
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(fs)
 library(dsbox)
@@ -13,14 +13,13 @@ library(viridis)
 library(janitor)
 library(scales)
 library(gridExtra)
-library(emojifont)
 library(ggridges)
 library(gganimate)
 library(ggrepel)
 ```
 
 
-```{r load-data, echo = FALSE}
+```{r load-data, echo = FALSE, message = FALSE, warning = FALSE}
 
 superbowl_data <- read_csv("data/superbowldata.csv", show_col_types = FALSE)
 
@@ -104,7 +103,7 @@ Graph 2:
 For our second graph, we created a new variable `brand_type`, which grouped the 
 10 brands into 4 categories: `Beverage`, `Car`, `NFL`, and `misc`. All drink 
 brands were placed in the "Beverage" category, car brands were placed in the 
-"Car" category, Doritos and E-Trade were placed in the miscellaneous category, 
+`Car` category, Doritos and E-Trade were placed in the miscellaneous category, 
 and NFL was placed in its own category. Then we grouped by `brand_type` and used 
 the summarise function to create a new variable representing the count of each 
 ad characteristic. We used pivot_longer to group all of the ad characteristics 
@@ -225,7 +224,7 @@ ggplot(q1_p1_data %>%
 
 ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
     geom_bar(position = "stack", stat = "identity", 
-             color = "black") + coord_flip() + 
+             color = "black") +
   scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(title = "Popularity of Ad Characteristics by Brand Type", 
@@ -335,7 +334,7 @@ ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
 
 #### Visualiztion two
 
-```{r q2_p2_graph, fig.align = 'center'}
+```{r q2_p2_graph, fig.align = 'center', echo = FALSE}
 
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
   geom_point(aes(color = brand), show.legend = FALSE) +
@@ -399,14 +398,10 @@ Our presentation can be found [here](https://labs-az-14.oit.duke.edu:30033/files
 
 ## Data
 
-Include a citation for your data here. See
-<http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840
-Library Guides: Harvard Referencing: Data
-Library Guides: Harvard Referencing: Data
-libraryguides.vu.edu.au
-> for guidance
-on proper citation for datasets. If you got your data off the web, make
-sure to note the retrieval date.
+Thomas Mock (2021). Tidy Tuesday: A weekly data project aimed at the R ecosystem.
+SuperBowl Ads. https://github.com/rfordatascience/tidytuesday,
+viewed 13 September 2021. 
+
 
 ## References
 

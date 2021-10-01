@@ -2,53 +2,6 @@ Superbowl Ads
 ================
 The Outliers
 
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-
-    ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-    ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
-    ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-    ## Loading required package: viridisLite
-
-    ## 
-    ## Attaching package: 'janitor'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     chisq.test, fisher.test
-
-    ## 
-    ## Attaching package: 'scales'
-
-    ## The following object is masked from 'package:viridis':
-    ## 
-    ##     viridis_pal
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     discard
-
-    ## The following object is masked from 'package:readr':
-    ## 
-    ##     col_factor
-
-    ## 
-    ## Attaching package: 'gridExtra'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-
-    ## New names:
-    ## * `` -> ...1
-
-    ## Warning: One or more parsing issues, see `problems()` for details
-
 ## Introduction
 
 Every year millions of Americans tune into the most watched television
@@ -145,7 +98,7 @@ clearly distinguished the 7 characteristics by color.
 Graph 2: For our second graph, we created a new variable `brand_type`,
 which grouped the 10 brands into 4 categories: `Beverage`, `Car`, `NFL`,
 and `misc`. All drink brands were placed in the “Beverage” category, car
-brands were placed in the “Car” category, Doritos and E-Trade were
+brands were placed in the `Car` category, Doritos and E-Trade were
 placed in the miscellaneous category, and NFL was placed in its own
 category. Then we grouped by `brand_type` and used the summarise
 function to create a new variable representing the count of each ad
@@ -259,7 +212,7 @@ ggplot(q1_p1_data %>%
 ``` r
 ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
     geom_bar(position = "stack", stat = "identity", 
-             color = "black") + coord_flip() + 
+             color = "black") +
   scale_fill_brewer(palette = "Spectral") + 
   theme_minimal() +
   labs(title = "Popularity of Ad Characteristics by Brand Type", 
@@ -270,8 +223,6 @@ ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) +
   geom_bar(position = "stack", stat = "identity", color = "black") +
   coord_flip()
 ```
-
-    ## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
 
 <img src="README_files/figure-gfm/stacked_bar_viz_2-1.png" style="display: block; margin: auto;" />
 
@@ -395,19 +346,6 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 #### Visualiztion two
 
-``` r
-ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-  geom_point(aes(color = brand), show.legend = FALSE) +
-  geom_text_repel(aes(label = brand)) +
-  scale_fill_brewer(palette = "Spectral") + 
-  scale_y_log10() +
-  scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(title = "Average Total Comments vs. Average Total Views, by brand",
-       x = "Average Total Views", y = "Average Total Comments",
-       caption = "Axes on log10 scale, labels are raw units") + 
-  theme_minimal()
-```
-
 <img src="README_files/figure-gfm/q2_p2_graph-1.png" style="display: block; margin: auto;" />
 
 ### Discussion
@@ -460,12 +398,10 @@ Our presentation can be found
 
 ## Data
 
-Include a citation for your data here. See
-\<<http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840> Library
-Guides: Harvard Referencing: Data Library Guides: Harvard Referencing:
-Data libraryguides.vu.edu.au \> for guidance on proper citation for
-datasets. If you got your data off the web, make sure to note the
-retrieval date.
+Thomas Mock (2021). Tidy Tuesday: A weekly data project aimed at the R
+ecosystem. SuperBowl Ads.
+<https://github.com/rfordatascience/tidytuesday>, viewed 13 September
+2021.
 
 ## References
 
