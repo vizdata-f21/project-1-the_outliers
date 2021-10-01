@@ -173,14 +173,15 @@ categories.
 ``` r
 q1_p1_data <- superbowl_data %>%
   group_by(year) %>%
-  summarise(funny = sum(funny),
-            show_product_quickly = sum(show_product_quickly),
-            patriotic = sum(patriotic),
-            celebrity = sum(celebrity),
-            danger= sum(danger),
-            animals= sum(animals),
-            sexuality = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, danger, animals, sexuality), names_to = "type")
+  summarise(Funny = sum(funny),
+            Patriotic= sum(patriotic),
+            Celebrity = sum(celebrity),
+            Danger= sum(danger),
+            Animal= sum(animals),
+            "Product Quickly" = sum(show_product_quickly),
+            Sexuality = sum(use_sex)) %>%
+  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly", 
+                        Danger, Animal, Sexuality), names_to = "type")
 ```
 
 ``` r
@@ -199,15 +200,15 @@ q1_p2_data2 <- superbowl_data%>%
 
 q1_p2_data2 <- q1_p2_data2 %>%
   group_by(brand_type) %>%
-  summarise(funny = sum(funny),
-            show_product_quickly = sum(show_product_quickly),
-            patriotic = sum(patriotic),
-            celebrity = sum(celebrity),
-            danger= sum(danger),
-            animals= sum(animals),
-            sexuality = sum(use_sex)) %>%
-  pivot_longer(cols = c(funny, show_product_quickly, patriotic, celebrity, 
-                        danger, animals, sexuality), names_to = "type")
+  summarise(Funny = sum(funny),
+            Patriotic= sum(patriotic),
+            Celebrity = sum(celebrity),
+            Danger= sum(danger),
+            Animal= sum(animals),
+            "Product Quickly" = sum(show_product_quickly),
+            Sexuality = sum(use_sex)) %>%
+  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly", 
+                        Danger, Animal, Sexuality), names_to = "type")
 
 
 q1_p2_data2 <- q1_p2_data2 %>%
@@ -220,7 +221,7 @@ q1_p2_data2 <- q1_p2_data2 %>%
 
 ``` r
 g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
-  geom_col() + labs(title = 'Prevalence of Ad Types: {closest_state}',
+  geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
                     x = 'Ad Type', y= " Ad Count") + theme_minimal() + 
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
                                  vjust=.8, hjust=0.8), 
@@ -240,17 +241,16 @@ animate(g,
 ``` r
 ggplot(q1_p1_data%>% filter(year %in% c(2000, 2005, 2010,2015, 2020)),
        aes(type, value, fill  = type)) +
-  geom_col(color = "black") + labs(title = 'Prevalence of Superbowl Ad
-                                   Characteristics Over Time', x = 'Ad Type',
+  geom_col(color = "black") + labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
                                    y= " Ad Count", fill = "Ad Characteristic")+ 
-  theme_minimal() + theme( axis.text.x=element_blank(), 
+  theme_minimal() + theme(axis.text.x=element_blank(), 
                            axis.title.x = element_blank(), 
-                           legend.position = c(0.8, 0.2), 
+                           legend.position = c(0.85, 0.25), 
                            legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
         legend.key.width = unit(.5, 'cm'), 
         legend.background = element_rect(size = 0.5, colour = 1), 
-        axis.title.y = element_text(angle = 0, vjust = 0.5)) + 
+        axis.title.y = element_text(angle = 90, vjust = 0.5)) + 
   scale_fill_brewer(palette = "Spectral") + facet_wrap(~year, ncol =3) + 
   scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
@@ -264,18 +264,15 @@ ggplot(q1_p2_data2, aes(fill=type, y=per, x=brand_type)) +
     geom_bar(position="stack", stat="identity", 
              color = "black") + coord_flip() + 
   scale_fill_brewer(palette = "Spectral") + theme_minimal()+
-  labs(title = "Prevalence of Ad Characteristics by Brand Type", 
+  labs(title = "Popularity of Ad Characteristics by Brand Type", 
        x= "Brand Type",
        y = "Percentage", 
        fill = "Ad Features") + scale_y_continuous(labels = percent) +
   geom_bar(position="stack", stat="identity", color = "black") +
-  coord_flip() + scale_fill_brewer(palette = "Spectral")
+  coord_flip()
 ```
 
     ## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
-
-    ## Scale for 'fill' is already present. Adding another scale for 'fill', which
-    ## will replace the existing scale.
 
 <img src="README_files/figure-gfm/stacked_bar_viz_2-1.png" style="display: block; margin: auto;" />
 
@@ -381,6 +378,7 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
          geom_point(aes(color = brand), show.legend = FALSE) +
   geom_text_repel(aes(label = brand)) +
+  scale_fill_brewer(palette = "Spectral") + 
   scale_y_log10() +
   scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
   labs(x = "Average Total Views", y = "Average Total Comments",
