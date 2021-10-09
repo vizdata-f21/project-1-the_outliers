@@ -31,37 +31,6 @@ Every year millions of Americans tune into the most watched  television broadcas
 
 Using a FiveThirtyEight dataset of 233 ads from 10 brands that aired the most spots since 2000 we decided to explore the themes that make Super Bowl ads so popular. The dataset includes categorical variables used to classify each ad as `funny`, `show_product_quickly`, `patriotic`, `celebrity`, `danger`, `animals` and/or `use_sex`, while also including variables that that we will use to explore popularity such as `year`, `brand`, `view_count`, `like_count`, `dislike_count`, `favorite_count`, and `comment_count`. We chose to use this dataset because we — like millions other Americans – love Super Bowl ads, and are interested in viewing trends over time.
 
-The full data dictionary can be seen below:
-
-## superbowldata.csv
-
-|Variable         |Data         |Description |
-|:----------------|:-----------|:--------------------|
-|year       | double | Superbowl year|
-|brand     | character| Brand for commercial|
-|superbowl_ads_dot_com_url    | character | Superbowl ad URL|
-|youtube_url             | character | Youtube URL|
-|funny              | logical | Contains humor |
-|show_product_quickly              | logical | Shows product quickly |
-|patriotic             | logical | Patriotic |
-|celebrity            |logical| Contains celebrity |
-|danger             | logical | Contains danger |
-|animals          | logical| Contains animals |
-|use_sex            | logical| Uses sexuality |
-|id             |character | Youtube ID |
-|kind         | character | Youtube Kind |
-|etag          | character | Youtube etag |
-|view_count           | integer | Youtube view count |
-|like_count          | integer| Youtube like count |
-|dislike_count          | integer| Youtube dislike count |
-|favorite_count         | integer | Youtube favorite count |
-|comment_count        |integer | Youtube comment count |
-|published_at       | character | Youtube when published |
-|title| character  | Youtube title |
-|description | character  | Youtube description |
-|thumbnail| character | Youtube thumbnail |
-|channel_title       | character | Youtube channel name |
-|category_id      | character | Youtube content category id |
 
 
 ## Exploring how Super Bowl commercial content trends change over time
@@ -118,9 +87,9 @@ amongst certain brand categories.
 
 #### Wrangling data
 
-```{r, q1_p1_wrangling}
+```{r, ad_characteristic_count_wrangling}
 
-q1_p1_data <- superbowl_data %>%
+charactertistic_count <- superbowl_data %>%
   group_by(year) %>%
   summarise(Funny = sum(funny),
             Patriotic= sum(patriotic),
@@ -132,11 +101,12 @@ q1_p1_data <- superbowl_data %>%
   pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly", 
                         Danger, Animal, Sexuality), names_to = "type")
 
+
 ```
 
-```{r q1-p2-data-wrangling}
+```{r brand_type_wrangling}
 
-q1_p2_data2 <- superbowl_data%>%
+brand_category_data <- superbowl_data%>%
   mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
                                brand == "Kia" ~ "Car",
                                brand == "Hynudai" ~ "Car",
@@ -149,7 +119,7 @@ q1_p2_data2 <- superbowl_data%>%
                                brand == "NFL" ~ "NFL", 
                                TRUE ~ "Miscellaneous"))
 
-q1_p2_data2 <- q1_p2_data2 %>%
+brand_category_data <- brand_category_data %>%
   group_by(brand_type) %>%
   summarise(Funny = sum(funny),
             Patriotic= sum(patriotic),
@@ -162,7 +132,7 @@ q1_p2_data2 <- q1_p2_data2 %>%
                         Danger, Animal, Sexuality), names_to = "type")
 
 
-q1_p2_data2 <- q1_p2_data2 %>%
+brand_category_data<- brand_category_data %>%
   group_by(brand_type)%>% 
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
@@ -175,10 +145,41 @@ q1_p2_data2 <- q1_p2_data2 %>%
 
 ```{r, animated_viz_1, fig.align = 'center'}
 
-g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+static_plot <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +  
+  facet_wrap(~ year) +  
+  scale_fill_viridis_d(option = "magma",  
+                       direction = -1) +
+  scale_y_reverse() +  
+  labs(fill = NULL) +  
+  labs(x = 'Population (millions)') +  
+  labs(y = "") 
+  
+anim <- static_plot +  
+  facet_null()  +  
+  geom_text(x = 1000 , y = -10,  
+            family = "Times",  
+            aes(label = as.character(year)),  
+            size = 30, col = "grey18") +  
+  aes(group = type) +  
+  transition_states(year,transition_length = 0,
+                        state_length = 2 )
+anim
+
+```
+  
+
+```{r animateddd}
+
+
+g <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +
   geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
                     x = 'Ad Type', y= " Ad Count") + 
   theme_minimal() + 
+  coord_flip() + 
+  geom_text(x = 1000 , y = -10,  
+            family = "Times",  
+            aes(label = as.character(year)),  
+            size = 30, col = "grey18")  + 
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
                                  vjust=.8, hjust=0.8), 
         legend.position = "none") + 
@@ -197,7 +198,7 @@ animate(g,
 
 ```{r, faceted_viz_1, fig.align = 'center'}
 
-ggplot(q1_p1_data %>% 
+ggplot(charactertistic_count %>% 
          filter(year %in% c(2000, 2005, 2010,2015, 2020)),
        aes(type, value, fill  = type)) +
   geom_col(color = "black") + 
@@ -222,7 +223,7 @@ ggplot(q1_p1_data %>%
 
 ```{r, stacked_bar_viz_2, fig.align = 'center'}
 
-ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
+ggplot(brand_category_data, aes(fill = type, y = per, x = brand_type)) + 
     geom_bar(position = "stack", stat = "identity", 
              color = "black") +
   scale_fill_brewer(palette = "Spectral") + 
