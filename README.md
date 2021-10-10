@@ -2,53 +2,6 @@ Superbowl Ads
 ================
 The Outliers
 
-    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
-
-    ## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-    ## ✓ tibble  3.1.4     ✓ dplyr   1.0.7
-    ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-    ## ✓ readr   2.0.2     ✓ forcats 0.5.1
-
-    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-    ## x dplyr::filter() masks stats::filter()
-    ## x dplyr::lag()    masks stats::lag()
-
-    ## Loading required package: viridisLite
-
-    ## 
-    ## Attaching package: 'janitor'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     chisq.test, fisher.test
-
-    ## 
-    ## Attaching package: 'scales'
-
-    ## The following object is masked from 'package:viridis':
-    ## 
-    ##     viridis_pal
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     discard
-
-    ## The following object is masked from 'package:readr':
-    ## 
-    ##     col_factor
-
-    ## 
-    ## Attaching package: 'gridExtra'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     combine
-
-    ## New names:
-    ## * `` -> ...1
-
-    ## Warning: One or more parsing issues, see `problems()` for details
-
 ## Introduction
 
 Every year millions of Americans tune into the most watched television
@@ -73,38 +26,6 @@ variables that that we will use to explore popularity such as `year`,
 and `comment_count`. We chose to use this dataset because we — like
 millions other Americans – love Super Bowl ads, and are interested in
 viewing trends over time.
-
-The full data dictionary can be seen below:
-
-## superbowldata.csv
-
-| Variable                      | Data      | Description                 |
-| :---------------------------- | :-------- | :-------------------------- |
-| year                          | double    | Superbowl year              |
-| brand                         | character | Brand for commercial        |
-| superbowl\_ads\_dot\_com\_url | character | Superbowl ad URL            |
-| youtube\_url                  | character | Youtube URL                 |
-| funny                         | logical   | Contains humor              |
-| show\_product\_quickly        | logical   | Shows product quickly       |
-| patriotic                     | logical   | Patriotic                   |
-| celebrity                     | logical   | Contains celebrity          |
-| danger                        | logical   | Contains danger             |
-| animals                       | logical   | Contains animals            |
-| use\_sex                      | logical   | Uses sexuality              |
-| id                            | character | Youtube ID                  |
-| kind                          | character | Youtube Kind                |
-| etag                          | character | Youtube etag                |
-| view\_count                   | integer   | Youtube view count          |
-| like\_count                   | integer   | Youtube like count          |
-| dislike\_count                | integer   | Youtube dislike count       |
-| favorite\_count               | integer   | Youtube favorite count      |
-| comment\_count                | integer   | Youtube comment count       |
-| published\_at                 | character | Youtube when published      |
-| title                         | character | Youtube title               |
-| description                   | character | Youtube description         |
-| thumbnail                     | character | Youtube thumbnail           |
-| channel\_title                | character | Youtube channel name        |
-| category\_id                  | character | Youtube content category id |
 
 ## Exploring how Super Bowl commercial content trends change over time
 
@@ -132,9 +53,11 @@ line graph with year on the x axis, count of ad characteristics on the y
 axis, and lines colored by ad characteristic. However, due to the number
 of ad categories it was difficult to discern the trends in popularity
 for each ad type and the graph appeared very crowded. We then decided to
-use an animated bar chart to show the changing prevalence of certain ad
+use animated bar chart to show the changing prevalence of certain ad
 features over time. This animated plot was useful to see how certain ad
-characteristics changed from year to year. However, it was difficult to
+characteristics changed from year to year. After feedback, we decided to
+make this a racing bar chart in which the categories changed positions
+based on their prevalence. However, in both cases it was difficult to
 compare trends over the entire time frame (i.e. trends in 2000 Super
 Bowl commercials versus 2020 Super Bowl commercials). For this reason we
 have included an additional plot which captures 5 frames of the animated
@@ -145,7 +68,7 @@ clearly distinguished the 7 characteristics by color.
 Graph 2: For our second graph, we created a new variable `brand_type`,
 which grouped the 10 brands into 4 categories: `Beverage`, `Car`, `NFL`,
 and `misc`. All drink brands were placed in the “Beverage” category, car
-brands were placed in the “Car” category, Doritos and E-Trade were
+brands were placed in the `Car` category, Doritos and E-Trade were
 placed in the miscellaneous category, and NFL was placed in its own
 category. Then we grouped by `brand_type` and used the summarise
 function to create a new variable representing the count of each ad
@@ -162,7 +85,7 @@ advertisements were popular amongst certain brand categories.
 #### Wrangling data
 
 ``` r
-q1_p1_data <- superbowl_data %>%
+charactertistic_count <- superbowl_data %>%
   group_by(year) %>%
   summarise(Funny = sum(funny),
             Patriotic= sum(patriotic),
@@ -171,25 +94,25 @@ q1_p1_data <- superbowl_data %>%
             Animal= sum(animals),
             "Product Quickly" = sum(show_product_quickly),
             Sexuality = sum(use_sex)) %>%
-  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly", 
+  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly",
                         Danger, Animal, Sexuality), names_to = "type")
 ```
 
 ``` r
-q1_p2_data2 <- superbowl_data%>%
-  mutate(brand_type = case_when(brand == "Toyota" ~ "Car", 
+brand_category_data <- superbowl_data%>%
+  mutate(brand_type = case_when(brand == "Toyota" ~ "Car",
                                brand == "Kia" ~ "Car",
                                brand == "Hynudai" ~ "Car",
-                               brand == "Bud Light" ~ "Beverage", 
+                               brand == "Bud Light" ~ "Beverage",
                                brand == "Coca-Cola" ~ "Beverage",
-                               brand == "Budweiser" ~ "Beverage", 
-                               brand == "Pepsi" ~ "Beverage", 
-                               brand == "Doritos" ~ "Misc.", 
-                               brand == "E-Trade" ~ "Misc.", 
-                               brand == "NFL" ~ "NFL", 
+                               brand == "Budweiser" ~ "Beverage",
+                               brand == "Pepsi" ~ "Beverage",
+                               brand == "Doritos" ~ "Misc.",
+                               brand == "E-Trade" ~ "Misc.",
+                               brand == "NFL" ~ "NFL",
                                TRUE ~ "Miscellaneous"))
 
-q1_p2_data2 <- q1_p2_data2 %>%
+brand_category_data <- brand_category_data %>%
   group_by(brand_type) %>%
   summarise(Funny = sum(funny),
             Patriotic= sum(patriotic),
@@ -198,12 +121,12 @@ q1_p2_data2 <- q1_p2_data2 %>%
             Animal= sum(animals),
             "Product Quickly" = sum(show_product_quickly),
             Sexuality = sum(use_sex)) %>%
-  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly", 
+  pivot_longer(cols = c(Funny, Patriotic, Celebrity, "Product Quickly",
                         Danger, Animal, Sexuality), names_to = "type")
 
 
-q1_p2_data2 <- q1_p2_data2 %>%
-  group_by(brand_type)%>% 
+brand_category_data<- brand_category_data %>%
+  group_by(brand_type)%>%
   mutate(per=value/sum(value)) %>%
   mutate(labels = paste(per, "%"))
 ```
@@ -211,44 +134,99 @@ q1_p2_data2 <- q1_p2_data2 %>%
 #### Visualization one
 
 ``` r
-g <- ggplot(q1_p1_data, aes(type, value, fill  = type)) +
+g <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +
   geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
-                    x = 'Ad Type', y= " Ad Count") + 
-  theme_minimal() + 
-  theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
-                                 vjust=.8, hjust=0.8), 
-        legend.position = "none") + 
-  transition_states(year, 
+                    x = 'Ad Type', y= " Ad Count") +
+  theme_minimal() +
+  coord_flip() +
+  geom_text(x = 1000 , y = -10,  
+            family = "Times",  
+            aes(label = as.character(year)),  
+            size = 35, col = "grey18")  +
+  theme(axis.text.x=element_text(color = "black", size=10, angle=30,
+                                 vjust=.8, hjust=0.8),
+        legend.position = "none") +
+  transition_states(year,
                     transition_length = 0,
                     state_length = 2 ) +
-  scale_fill_brewer(palette = "Spectral") 
+  scale_fill_brewer(palette = "Spectral")
 
-animate(g, 
-        nframes = 100, # 200 frames
+animate(g,
+        nframes = 100,
         fps = 5,
         end_pause = 15)
 ```
 
-<img src="README_files/figure-gfm/animated_viz_1-1.gif" style="display: block; margin: auto;" />
+![](README_files/figure-gfm/old_animated-1.gif)<!-- -->
 
 ``` r
-ggplot(q1_p1_data %>% 
+characteristic_count_updated <- charactertistic_count %>%
+  group_by(year)%>%  
+  mutate(rank1 = rank(-value),
+         Value_lbl = paste0(" ", value)) %>%
+  ungroup() %>%
+  group_by(year) %>%
+  arrange(rank1, type) %>%
+  mutate(rank = seq(1, n())) %>%
+  ungroup()
+
+
+anim = ggplot(characteristic_count_updated, aes(rank, group = type, fill = type))+
+  geom_tile(aes(y = value/2,
+                height = value,
+                width = 0.9), alpha = 0.8, color = NA) +
+  scale_fill_viridis_d(option = "magma",  
+                       direction = -1) +
+  geom_text(aes(y = 0, label = paste(type, " ")), vjust = 0.2, hjust = 1, size = 5) +
+  geom_text(aes(y= value,label = Value_lbl, hjust=0),size = 5 ) +
+  coord_flip(clip = "off", expand = TRUE) +
+  scale_x_reverse() +
+  scale_y_continuous(breaks = seq(0, 14, by = 2)) +
+  theme_minimal() +
+  theme(axis.line=element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(size=12, face="italic",color = "black"),
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        legend.position="none",
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.grid.major.x = element_line( size=.1, color="grey" ),
+        panel.grid.minor.x = element_line( size=.1, color="grey" ),
+        plot.title=element_text(size=16, hjust=0.5, face="bold",colour="black", vjust=-1),
+        plot.subtitle=element_text(size=18, hjust=0.5, face="italic", color="red"),
+        plot.caption =element_text(size=12, hjust=0.5, face="italic", color="red"),
+        plot.background=element_blank(),
+        plot.margin = margin(1,4, 1, 8, "cm")) +
+  transition_states(year, transition_length = 4, state_length = 1) +
+  ease_aes('sine-in-out') +
+  labs(title = 'Prevalence of Ad Characteristics: {closest_state}', y= "Ad Count")
+
+animate(anim, nframes = 325,fps = 20)
+```
+
+![](README_files/figure-gfm/characteristic_racing_plot-1.gif)<!-- -->
+
+``` r
+ggplot(charactertistic_count %>%
          filter(year %in% c(2000, 2005, 2010,2015, 2020)),
        aes(type, value, fill  = type)) +
-  geom_col(color = "black") + 
-  labs(title = 'Popularity of Superbowl Ad Characteristics Over Time', 
-       y= " Ad Count", fill = "Ad Characteristic") + 
-  theme_minimal() + 
-  theme(axis.text.x = element_blank(), 
-        axis.title.x = element_blank(), 
+  geom_col(color = "black") +
+  labs(title = 'Popularity of Superbowl Ad Characteristics Over Time',
+       y= " Ad Count", fill = "Ad Characteristic") +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
         legend.position = c(0.85, 0.25),
         legend.key.size = unit(.5, 'cm'),
         legend.key.height = unit(.5, 'cm'), #change legend key height
-        legend.key.width = unit(.5, 'cm'), 
-        legend.background = element_rect(size = 0.5, colour = 1), 
-        axis.title.y = element_text(angle = 90, vjust = 0.5)) + 
-  scale_fill_brewer(palette = "Spectral") + 
-  facet_wrap(~year, ncol = 3) + 
+        legend.key.width = unit(.5, 'cm'),
+        legend.background = element_rect(size = 0.5, colour = 1),
+        axis.title.y = element_text(angle = 90, vjust = 0.5)) +
+  scale_fill_brewer(palette = "Spectral") +
+  facet_wrap(~year, ncol = 3) +
   scale_y_continuous(breaks = seq(0, 12, by = 2))
 ```
 
@@ -257,21 +235,24 @@ ggplot(q1_p1_data %>%
 #### Visualization two
 
 ``` r
-ggplot(q1_p2_data2, aes(fill = type, y = per, x = brand_type)) + 
-    geom_bar(position = "stack", stat = "identity", 
-             color = "black") + coord_flip() + 
-  scale_fill_brewer(palette = "Spectral") + 
+ggplot(brand_category_data, aes(fill = type, y = per, x = brand_type)) +
+    geom_bar(position = "stack", stat = "identity",
+             color = "black") +
+  scale_fill_brewer(palette = "Spectral") +
   theme_minimal() +
-  labs(title = "Popularity of Ad Characteristics by Brand Type", 
+  labs(title = "Popularity of Ad Characteristics by Brand Type",
        x= "Brand Type",
-       y = "Percentage", 
-       fill = "Ad Features") + 
+       y = "Percentage") +
   scale_y_continuous(labels = percent) +
   geom_bar(position = "stack", stat = "identity", color = "black") +
-  coord_flip()
+  guides(fill = guide_legend(reverse = TRUE, nrow = 1))  +
+  coord_flip()  +  theme(legend.direction = "horizontal",
+        legend.position = "bottom",
+        legend.box = "horizontal",
+        legend.title = element_blank(),
+        legend.text = element_text(size =7)
+        )
 ```
-
-    ## Coordinate system already present. Adding new coordinate system, which will replace the existing one.
 
 <img src="README_files/figure-gfm/stacked_bar_viz_2-1.png" style="display: block; margin: auto;" />
 
@@ -391,24 +372,44 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 #### Visualization one
 
-<img src="README_files/figure-gfm/q2_p1_graph-1.png" style="display: block; margin: auto;" />
+``` r
+ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
+    geom_segment(aes(y = reorder(brand, proportion_likes_total),
+                     yend = reorder(brand, proportion_likes_total),
+                     x = 0, xend = proportion_likes_total, color = brand),
+                 show.legend = FALSE, size = 2) +
+  geom_point(aes(color = brand), size = 3, show.legend = FALSE) +
+  coord_cartesian(xlim = c(.75, 1)) +
+  scale_color_brewer(palette = "Paired") + 
+  labs(title = "Proportion of likes received out of total video interactions,
+       by brand", x = "Proportion of likes out of total interactions",
+       y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
+  theme_minimal() +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_text(size = 11, color = "black"),
+        axis.text.x = element_text(size = 11, color = "black"),
+        axis.title.x = element_text(size = 12),
+        axis.title.y = element_text(size = 12))
+```
+
+<img src="README_files/figure-gfm/q2_p1_graph_proprtion_likes-1.png" style="display: block; margin: auto;" />
 
 #### Visualiztion two
 
 ``` r
 ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-  geom_point(aes(color = brand), show.legend = FALSE) +
+  geom_point(aes(color = brand), show.legend = FALSE, size = 4) +
   geom_text_repel(aes(label = brand)) +
-  scale_fill_brewer(palette = "Spectral") + 
+  scale_color_brewer(palette = "Paired") +
   scale_y_log10() +
   scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
   labs(title = "Average Total Comments vs. Average Total Views, by brand",
        x = "Average Total Views", y = "Average Total Comments",
-       caption = "Axes on log10 scale, labels are raw units") + 
+       caption = "Axes on log10 scale, labels are raw units") +
   theme_minimal()
 ```
 
-<img src="README_files/figure-gfm/q2_p2_graph-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/q2_p2_graph_total_comments_vs_total_views-1.png" style="display: block; margin: auto;" />
 
 ### Discussion
 
@@ -460,13 +461,13 @@ Our presentation can be found
 
 ## Data
 
-Include a citation for your data here. See
-\<<http://libraryguides.vu.edu.au/c.php?g=386501&p=4347840> Library
-Guides: Harvard Referencing: Data Library Guides: Harvard Referencing:
-Data libraryguides.vu.edu.au \> for guidance on proper citation for
-datasets. If you got your data off the web, make sure to note the
-retrieval date.
+Thomas Mock (2021). Tidy Tuesday: A weekly data project aimed at the R
+ecosystem. SuperBowl Ads.
+<https://github.com/rfordatascience/tidytuesday>, viewed 13 September
+2021.
 
 ## References
 
 <http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf>
+
+<https://towardsdatascience.com/https-towardsdatascience-com-everything-you-need-to-know-about-animated-bar-charts-be033f398619>
