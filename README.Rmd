@@ -58,9 +58,11 @@ time. Originally, we hoped to show this data in a line graph with year on the
 x axis, count of ad characteristics on the y axis, and lines colored by ad 
 characteristic. However, due to the number of ad categories it was difficult 
 to discern the trends in popularity for each ad type and the graph appeared very
-crowded. We then decided to use an animated bar chart to show the changing
+crowded. We then decided to use animated bar chart to show the changing
 prevalence of certain ad features over time. This animated plot was useful to
-see how certain ad characteristics changed from year to year. However, it was 
+see how certain ad characteristics changed from year to year. After feedback, 
+we decided to make this a racing bar chart in which the categories changed
+positions based on their prevalence. However, in both cases it was 
 difficult to compare trends over the entire time frame (i.e. trends in 2000
 Super Bowl commercials versus 2020 Super Bowl commercials). For this reason we 
 have included an additional plot which captures 5 frames of the animated plot. 
@@ -143,34 +145,7 @@ brand_category_data<- brand_category_data %>%
 
 #### Visualization one
 
-```{r, animated_viz_1, fig.align = 'center'}
-
-static_plot <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +  
-  facet_wrap(~ year) +  
-  scale_fill_viridis_d(option = "magma",  
-                       direction = -1) +
-  scale_y_reverse() +  
-  labs(fill = NULL) +  
-  labs(x = 'Population (millions)') +  
-  labs(y = "") 
-  
-anim <- static_plot +  
-  facet_null()  +  
-  geom_text(x = 1000 , y = -10,  
-            family = "Times",  
-            aes(label = as.character(year)),  
-            size = 30, col = "grey18") +  
-  aes(group = type) +  
-  transition_states(year,transition_length = 0,
-                        state_length = 2 )
-anim
-
-```
-  
-
-```{r animateddd}
-
-
+```{r old_animated}
 g <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +
   geom_col(color = "black") + labs(title = 'Popularity of Ad Characteristics: {closest_state}',
                     x = 'Ad Type', y= " Ad Count") + 
@@ -179,7 +154,7 @@ g <- ggplot(charactertistic_count, aes(type, value, fill  = type)) +
   geom_text(x = 1000 , y = -10,  
             family = "Times",  
             aes(label = as.character(year)),  
-            size = 30, col = "grey18")  + 
+            size = 35, col = "grey18")  + 
   theme(axis.text.x=element_text(color = "black", size=10, angle=30, 
                                  vjust=.8, hjust=0.8), 
         legend.position = "none") + 
@@ -194,6 +169,58 @@ animate(g,
         end_pause = 15)
 
 ```
+
+```{r characteristic_racing_plot}
+
+characteristic_count_updated <- charactertistic_count %>% 
+  group_by(year)%>%   
+  mutate(rank1 = rank(-value),
+         Value_lbl = paste0(" ", value)) %>%
+  ungroup() %>%
+  group_by(year) %>%
+  arrange(rank1, type) %>%
+  mutate(rank = seq(1, n())) %>%
+  ungroup() 
+
+
+anim = ggplot(characteristic_count_updated, aes(rank, group = type, fill = type))+
+  geom_tile(aes(y = value/2,
+                height = value,
+                width = 0.9), alpha = 0.8, color = NA) +
+  scale_fill_viridis_d(option = "magma",  
+                       direction = -1) + 
+  geom_text(aes(y = 0, label = paste(type, " ")), vjust = 0.2, hjust = 1, size = 5) + 
+  geom_text(aes(y= value,label = Value_lbl, hjust=0),size = 5 ) + 
+  coord_flip(clip = "off", expand = TRUE) +
+  scale_x_reverse() +
+  scale_y_continuous(breaks = seq(0, 14, by = 2)) + 
+  theme_minimal() +
+  theme(axis.line=element_blank(),
+        axis.title.y = element_blank(), 
+        axis.title.x = element_text(size=12, face="italic",color = "black"), 
+        axis.text.y=element_blank(),
+        axis.ticks=element_blank(),
+        legend.position="none",
+        panel.background=element_blank(),
+        panel.border=element_blank(),
+        panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),
+        panel.grid.major.x = element_line( size=.1, color="grey" ),
+        panel.grid.minor.x = element_line( size=.1, color="grey" ),
+        plot.title=element_text(size=16, hjust=0.5, face="bold",colour="black", vjust=-1),
+        plot.subtitle=element_text(size=18, hjust=0.5, face="italic", color="red"),
+        plot.caption =element_text(size=12, hjust=0.5, face="italic", color="red"),
+        plot.background=element_blank(),
+        plot.margin = margin(1,4, 1, 8, "cm")) +
+  transition_states(year, transition_length = 4, state_length = 1) +
+  ease_aes('sine-in-out') +
+  labs(title = 'Prevalence of Ad Characteristics: {closest_state}', y= "Ad Count") 
+
+animate(anim, nframes = 325,fps = 20)
+
+```
+
+
 
 
 ```{r, faceted_viz_1, fig.align = 'center'}
@@ -230,12 +257,16 @@ ggplot(brand_category_data, aes(fill = type, y = per, x = brand_type)) +
   theme_minimal() +
   labs(title = "Popularity of Ad Characteristics by Brand Type", 
        x= "Brand Type",
-       y = "Percentage", 
-       fill = "Ad Features") + 
+       y = "Percentage") + 
   scale_y_continuous(labels = percent) +
   geom_bar(position = "stack", stat = "identity", color = "black") +
-  coord_flip()
-
+  guides(fill = guide_legend(reverse = TRUE, nrow = 1))  +
+  coord_flip()  +  theme(legend.direction = "horizontal", 
+        legend.position = "bottom",
+        legend.box = "horizontal", 
+        legend.title = element_blank(), 
+        legend.text = element_text(size =7)
+        )
 ```
 
 
@@ -407,5 +438,7 @@ viewed 13 September 2021.
 ## References
 
 http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
+
+https://towardsdatascience.com/https-towardsdatascience-com-everything-you-need-to-know-about-animated-bar-charts-be033f398619
 
 
