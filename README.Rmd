@@ -252,6 +252,7 @@ ggplot(brand_category_data, aes(fill = type, y = per, x = brand_type)) +
   scale_y_continuous(labels = percent) +
   geom_bar(position = "stack", stat = "identity", color = "black") +
   guides(fill = guide_legend(reverse = TRUE, nrow = 1))  +
+<<<<<<< HEAD
   coord_flip() +  
   theme(legend.direction = "horizontal",
         legend.position = "bottom",
@@ -259,6 +260,13 @@ ggplot(brand_category_data, aes(fill = type, y = per, x = brand_type)) +
         legend.title = element_blank(),
         legend.text = element_text(size =7),
         aspect.ratio = .4
+=======
+  coord_flip()  +  theme(legend.direction = "horizontal",
+        legend.position = "bottom",
+        legend.box = "horizontal",
+        legend.title = element_blank(),
+        legend.text = element_text(size =7)
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
         )
 ```
 
@@ -323,7 +331,11 @@ q2_p1_data <- filter(superbowl_data, like_count != is.na(like_count) & dislike_c
 
 ```
 
+<<<<<<< HEAD
 ```{r q2p2_wrangling_total_view_comment_counts}
+=======
+```{r q2_p2_wrangling_total_view_comment_counts}
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
 
 q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
                          view_count != is.na(view_count)) %>%
@@ -335,7 +347,11 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 #### Visualization one
 
+<<<<<<< HEAD
 ```{r q2p1_graph_proprtion_likes, fig.align = 'center'}
+=======
+```{r q2_p1_graph_proprtion_likes, fig.align = 'center'}
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
 
 ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
     geom_segment(aes(y = reorder(brand, proportion_likes_total),
@@ -344,7 +360,11 @@ ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
                  show.legend = FALSE, size = 2) +
   geom_point(aes(color = brand), size = 3, show.legend = FALSE) +
   coord_cartesian(xlim = c(.75, 1)) +
+<<<<<<< HEAD
   scale_color_brewer(palette = "Paired") +
+=======
+  scale_color_brewer(palette = "Paired") + 
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
   labs(title = "Proportion of likes received out of total video interactions,
        by brand", x = "Proportion of likes out of total interactions",
        y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
@@ -426,13 +446,21 @@ Our presentation can be found [here](https://labs-az-14.oit.duke.edu:30033/files
 Thomas Mock (2021). Tidy Tuesday: A weekly data project aimed at the R ecosystem.
 SuperBowl Ads. https://github.com/rfordatascience/tidytuesday,
 viewed 13 September 2021.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
 
 ## References
 
 http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
 
+<<<<<<< HEAD
 https://towardsdatascience.com/https-towardsdatascience-com-everything-you-need-to-know-about-animated-bar-charts-be033f398619
 
 https://www.tutorialspoint.com/how-to-change-the-aspect-ratio-of-a-plot-in-ggplot2-in-r
 
 https://www.geeksforgeeks.org/how-to-fix-aspect-ratio-in-ggplot2-plot-in-r/#:~:text=The%20default%2C%20ratio%20%3D%201%2C,to%20fix%20the%20aspect%20ratio.&text=Parameters%3A,the%20x%20and%20y%20axes.
+=======
+https://towardsdatascience.com/https-towardsdatascience-com-everything-you-need-to-know-about-animated-bar-charts-be033f398619
+>>>>>>> 6e28cfcb83f582c836b41927208e531ae8d5c355
