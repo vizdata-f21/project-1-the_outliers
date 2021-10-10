@@ -372,44 +372,11 @@ q2_p2_data <- filter(superbowl_data, comment_count != is.na(comment_count) &
 
 #### Visualization one
 
-``` r
-ggplot(q2_p1_data, aes(x = proportion_likes_total, y = brand)) +
-    geom_segment(aes(y = reorder(brand, proportion_likes_total),
-                     yend = reorder(brand, proportion_likes_total),
-                     x = 0, xend = proportion_likes_total, color = brand),
-                 show.legend = FALSE, size = 2) +
-  geom_point(aes(color = brand), size = 3, show.legend = FALSE) +
-  coord_cartesian(xlim = c(.75, 1)) +
-  scale_color_brewer(palette = "Paired") + 
-  labs(title = "Proportion of likes received out of total video interactions,
-       by brand", x = "Proportion of likes out of total interactions",
-       y = "Brand", subtitle = "(Video interactions = likes + dislikes)") +
-  theme_minimal() +
-  theme(axis.ticks.y = element_blank(),
-        axis.text.y = element_text(size = 11, color = "black"),
-        axis.text.x = element_text(size = 11, color = "black"),
-        axis.title.x = element_text(size = 12),
-        axis.title.y = element_text(size = 12))
-```
-
-<img src="README_files/figure-gfm/q2_p1_graph_proprtion_likes-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/q2_p1_graph-1.png" style="display: block; margin: auto;" />
 
 #### Visualiztion two
 
-``` r
-ggplot(q2_p2_data, aes(x = avg_total_views, y = avg_total_comments)) +
-  geom_point(aes(color = brand), show.legend = FALSE, size = 4) +
-  geom_text_repel(aes(label = brand)) +
-  scale_color_brewer(palette = "Paired") +
-  scale_y_log10() +
-  scale_x_log10(labels = unit_format(unit = "M", scale = 1e-6)) +
-  labs(title = "Average Total Comments vs. Average Total Views, by brand",
-       x = "Average Total Views", y = "Average Total Comments",
-       caption = "Axes on log10 scale, labels are raw units") +
-  theme_minimal()
-```
-
-<img src="README_files/figure-gfm/q2_p2_graph_total_comments_vs_total_views-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/q2_p2_graph-1.png" style="display: block; margin: auto;" />
 
 ### Discussion
 
