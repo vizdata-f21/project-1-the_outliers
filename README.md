@@ -47,19 +47,6 @@ were popular among certain brand categories.
 
 ### Approach
 
-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD To address Question 1 we created two
-distinct plots:
-
-First, we created a a geom\_line plot with year on the x-axis and count
-on the y-axis. We colored the lines by type of video, after creating a
-count variable that corresponds to each ad category. For ads that
-feature multiple categories we count them as separate observations.
-Likewise, we omit ads that feature no categories at all. This plot is
-best for our question because it clearly displays trends over time
-faceted by category.
-
-# Second, \[\]
-
 Graph 1: Our first graph sought to explore the prevalence of ad
 characteristics over time. Originally, we hoped to show this data in a
 line graph with year on the x axis, count of ad characteristics on the y
@@ -92,7 +79,6 @@ each `brand_type` we calculated the percentage of each ad characteristic
 among ads for that brand\_type. These percentages are represented in the
 stacked bar chart. This plot clearly identified which characteristics of
 advertisements were popular amongst certain brand categories.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; f597c36cc1dce327a0427f9c51315dfceb3dca89
 
 ### Analysis
 
